@@ -27,7 +27,7 @@ public class PantallaJuego extends Activity{
 		final String[] respuestas = {"Madrid", "Roma", "París", "Estocolmo"};
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(getLayoutInflater().inflate(R.layout.custom_dialog,null));
-		builder.setTitle("¿Capital de España?");
+		builder.setTitle("Capital de España?");
 		builder.setItems(respuestas, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				// The 'which' argument contains the index position
