@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">geoQuiz</string>
+    <string name="action_settings">Settings</string>
+    <string name="infoButtonDescription">infoButton</string>
+    <string name="playButtonDescription">playButton</string>
+    <string name="infoDialog">Álvaro Pérez Ramón, David Portilla Abellán</string>
+    <string name="infoDialogTitle">About the authors</string>
+
+</resources>
