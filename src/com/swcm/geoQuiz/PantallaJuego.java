@@ -1,6 +1,7 @@
 package com.swcm.geoQuiz;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.app.Activity;
@@ -9,31 +10,46 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
+import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 public class PantallaJuego extends Activity {
 
-	private static final int PROGRESS = 0x1;
-
 	private ProgressBar mProgress;
+	private ListView mList;
 	private int mProgressStatus = 0;
 
 	private Handler mHandler = new Handler();
 
 	private List<Integer> itemsSelectedFromDialog = new ArrayList<Integer>();
 	
-	private String[] preguntas = new String[10];
-	private String[][] respuestas = new String[10][4];
+	private List<String> preguntas = new ArrayList<String>();
+	private List<Integer> soluciones = new ArrayList<Integer>();
+	private List<List<String>> respuestas = new ArrayList<List<String>>();
+	
+	// Este método es para probar. Su funcionalidad será parte del modelo
+	private void crearJuego() {
+		soluciones = Arrays.asList(0, 3, 2);
+		preguntas = Arrays.asList("p 1", "p 2", "p 3");
+		final List<String> resp0 = new ArrayList<String>();
+		final List<String> resp1 = new ArrayList<String>();
+		final List<String> resp2 = new ArrayList<String>();
+		resp0.add("resp0"); resp0.add("resp1"); resp0.add("resp2");
+		resp1.add("resp4"); resp1.add("resp5"); resp1.add("resp6"); resp1.add("resp7");
+		resp2.add("resp8"); resp2.add("resp9"); resp2.add("resp10");
+		respuestas.add(resp0);
+		respuestas.add(resp1);
+		respuestas.add(resp2);
+	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		for(int i = 0; i < preguntas.length; i++) {
-			preguntas[i] = "Pregunta número " + i;
-			for(int j = 0; j < respuestas[0].length; j++) {
-				respuestas[i][j] = "Resp. no. " + j + " de la pregunta " + i;
-			}
-		}
+		crearJuego();
+		
 		super.onCreate(savedInstanceState);
 		openDialog();
 	}
@@ -43,32 +59,61 @@ public class PantallaJuego extends Activity {
 		Log.i("PANTALLAJUEGO", "Diálogo cerrado");
 	}
 
-	public void openDialog() {
+	public void crearDialogo() {
 		
+		// Adaptador para el ListView del diálogo
 		final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
 				android.R.layout.select_dialog_item);
+		
+		// Premite actualizar los valores del ListView
 		runOnUiThread(new Runnable() {
 		    public void run() {
-		    	Log.i("PANTALLAJUEGO", "antes de morir....");
 		        adapter.notifyDataSetChanged();
 		    }
 		});
 		
-		adapter.addAll(respuestas[0]);
-		
+		// Builder del diálogo insuflado de res/custom_dialog.xml
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setView(getLayoutInflater().inflate(R.layout.custom_dialog,
 				null));
-		builder.setTitle(preguntas[0]);
+		
+
+		// Añade el adaptador al diálogo
 		builder.setAdapter(adapter, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int item) {
 				itemsSelectedFromDialog.add(item);
 			}
 		});
+		
+		// Crea el diálogo y lo muestra
 		final AlertDialog d = builder.create();
 		d.show();
 		
 		mProgress = (ProgressBar) d.findViewById(R.id.progressBar1);
+		mList = (ListView) d.findViewById(R.id.list);
+		
+		mList.setAdapter(adapter);
+		
+	}
+	
+	public void openDialog() {
+				
+		adapterForQuestion.add(preguntas.get(0));
+		preguntas.remove(0);
+		
+		adapterForAnswers.addAll(respuestas.get(0));
+		respuestas.remove(0);
+			
+
+		builder.setAdapter(adapterForQuestion, null);
+		
+		
+		
+		final AlertDialog d = builder.create();
+		d.show();
+
+		mProgress = (ProgressBar) d.findViewById(R.id.progressBar1);
+		
 		// Start lengthy operation in a background thread
 		new Thread(new Runnable() {
 			public void run() {
@@ -89,8 +134,14 @@ public class PantallaJuego extends Activity {
 				
 				runOnUiThread(new Runnable() {
 				    public void run() {
-				    	Log.i("PANTALLAJUEGO", "antes de morir....");
-				        adapter.add("Nuva respuesta");
+				        adapterForAnswers.clear();
+				        if(preguntas.get(0) != null) {
+				        	adapterForQuestion.add(preguntas.get(0));
+					        preguntas.remove(0);
+				        	adapterForAnswers.addAll(respuestas.get(0));
+					        respuestas.remove(0);
+				        }
+				        else d.dismiss();
 				    }
 				});
 				
@@ -100,7 +151,6 @@ public class PantallaJuego extends Activity {
 			    try {
 					Thread.sleep(100);
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			    return 1;
@@ -108,5 +158,7 @@ public class PantallaJuego extends Activity {
 		}).start();
 				
 	}
+	
+	
 	
 }
