@@ -24,7 +24,7 @@
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/orientacionButton"
         android:onClick="onClick"
-        android:text="Capitales" />
+        android:text="@string/capitalesButton" />
 
     <Button
         android:id="@+id/orientacionButton"
@@ -34,7 +34,7 @@
         android:layout_below="@+id/infoButton"
         android:layout_marginTop="120dp"
         android:onClick="onClick"
-        android:text="Orientación"
+        android:text="@string/orientacionButton"
         android:color="#38B5E5" />
    
 </RelativeLayout>

@@ -32,10 +32,19 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.swcm.geoQuiz.PantallaJuego"
+            android:name="com.swcm.geoQuiz.PantallaJuegoOrientacion"
             android:label="@string/app_name">
             <intent-filter>
-                <action android:name="com.swcm.geoQuiz.PANTALLAJUEGO" />
+                <action android:name="com.swcm.geoQuiz.PANTALLAJUEGOORIENTACION" />
+                
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.swcm.geoQuiz.PantallaJuegoCapitales"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="com.swcm.geoQuiz.PANTALLAJUEGOCAPITALES" />
                 
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>

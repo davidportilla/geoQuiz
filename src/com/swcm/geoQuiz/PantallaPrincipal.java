@@ -23,16 +23,24 @@ public class PantallaPrincipal extends Activity {
 		setContentView(R.layout.pantalla_principal);
 	}
 		
-	private AlertDialog confirmDialog(String titulo) {
+	private AlertDialog confirmDialog(String titulo, final String modoDeJuego) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(titulo);
 		CharSequence text = "OK";
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
-            	Intent i = new Intent(PantallaPrincipal.this,
-						PantallaJuego.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivity(i);
+            	if (modoDeJuego.equals("capitales")){
+            		Intent i = new Intent(PantallaPrincipal.this,
+    						PantallaJuegoCapitales.class);
+    				i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+    				startActivity(i);
+            	}if (modoDeJuego.equals("orientacion")){
+            		Intent i = new Intent(PantallaPrincipal.this,
+    						PantallaJuegoOrientacion.class);
+    				i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+    				startActivity(i);
+            	}
+            	
             }
         });
 		return builder.create();
@@ -57,9 +65,10 @@ public class PantallaPrincipal extends Activity {
 			about();
 			break;
 		case R.id.orientacionButton:
-			confirmDialog("Pulse OK para empezar").show();
+			confirmDialog("Pulse OK para empezar", "orientacion").show();
 			break;
 		case R.id.capitalesButton:
+			confirmDialog("Pulse OK para empezar", "capitales").show();
 			break;
 		}
 	}
