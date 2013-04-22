@@ -18,6 +18,16 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+/**
+ * Clase Pantalla Juego
+ * <br><br>
+ * Controlador de una ventana donde irán saliendo preguntas una tras otra.
+ * Se cambiará de pregunta cuando el usuario pulse en alguna respuesta o se
+ * acabe la barra de progreso.
+ * 
+ * @author David Portilla Abellán
+ * @version 22-4-2013
+ */
 public class PantallaJuego extends Activity {
 
 	private TextView mTextView;
@@ -25,18 +35,26 @@ public class PantallaJuego extends Activity {
 
 	private ProgressBar mProgressBar;
 	private int mProgressStatus;
-	private Handler mHandler = new Handler();
-
-	private List<Integer> itemsSelected = new ArrayList<Integer>();
-	private List<String> preguntas = new ArrayList<String>();
-	private List<Integer> soluciones = new ArrayList<Integer>();
-	private List<List<String>> respuestas = new ArrayList<List<String>>();
 	
-	private List<Boolean> aciertos = new ArrayList<Boolean>();
-	private List<Integer> timeForAnswer = new ArrayList<Integer>();
+	private Handler mHandler = new Handler();
+	
+	private boolean barraBloqueada = false;
+	
+	/* Se deben inicializar con los datos que recibe del modelo */
+	protected List<String> preguntas = new ArrayList<String>();
+	protected List<Integer> soluciones = new ArrayList<Integer>();
+	protected List<List<String>> respuestas = new ArrayList<List<String>>();
+	
+	protected List<Integer> itemsSelected = new ArrayList<Integer>();
+	protected List<Boolean> aciertos = new ArrayList<Boolean>();
+	protected List<Integer> timeForAnswer = new ArrayList<Integer>();
 
+	/**
+	 * 
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		crearJuego();
 
 		super.onCreate(savedInstanceState);
@@ -46,33 +64,38 @@ public class PantallaJuego extends Activity {
 		mListView = (ListView) findViewById(R.id.listView);
 		mProgressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+		configuraListener();
+		actualizarPregunta();
+		progreso().start();
+
+	}
+
+	/**
+	 * Configura el listener de mListView
+	 */
+	private void configuraListener() {
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public synchronized void onItemClick(AdapterView<?> arg0,
 					View arg1, int position, long arg3) {
 
-				if (position == soluciones.get(0)) {
-					arg1.setBackgroundColor(Color.parseColor("#99CC00"));
-					aciertos.add(true);
-				} else {
-					arg1.setBackgroundColor(Color.parseColor("#FF4444"));
-					mListView.getChildAt(soluciones.get(0)).setBackgroundColor(
-							Color.parseColor("#99CC00"));
-					aciertos.add(false);
-				}
+				pintarSoluciones(position, soluciones.get(0));
+				
 				timeForAnswer.add(mProgressStatus);
 				soluciones.remove(0);
-				mListView.invalidate();
 				itemsSelected.add(position);
 				Log.i("ITEMSELECTED", "" + position);
 
 				if (preguntas.size() != 0) {
 					mProgressStatus = 0;
 					Log.i("PULSADO", "mProgressStatus = " + mProgressStatus);
+					// Para dos segundos antes de sacar la siguiente pregunta
 					mHandler.post(new Runnable() {
 						public void run() {
 							try {
-								Thread.sleep(1000);
+								barraBloqueada = true;
+								Thread.sleep(2000);
+								barraBloqueada = false;
 							} catch (InterruptedException e) {
 								// TODO Auto-generated catch block
 								e.printStackTrace();
@@ -82,66 +105,51 @@ public class PantallaJuego extends Activity {
 					});
 
 				} else {
-					mProgressStatus = 101;
+					// La partida termina en el thread de progreso al salir del bucle.
+					mProgressStatus = 200;
 				}
 
 			}
 		});
-
-		actualizarPregunta();
-		// Start lengthy operation in a background thread
-		new Thread(new Runnable() {
-			public synchronized void run() {
-				mProgressStatus = 0;
-				while (mProgressStatus < 100) {
-					try {
-						Thread.sleep(100);
-					} catch (InterruptedException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-					mProgressStatus++;
-					// Update the progress bar
-					mHandler.post(new Runnable() {
-						public void run() {
-							Log.i("ACTUALIZA BARRA", "mProgressStatus = "
-									+ mProgressStatus);
-							mProgressBar.setProgress(mProgressStatus);
-						}
-					});
-
-					if (mProgressStatus == 99 && preguntas.size() != 0) {
-						runOnUiThread(new Runnable() {
-							public void run() {
-								itemsSelected.add(-1);
-								Log.i("ITEMSELECTED", "-1");
-								soluciones.remove(0);
-								aciertos.add(false);
-								timeForAnswer.add(mProgressStatus + 1);
-								mProgressStatus = 0;
-								actualizarPregunta();
-							}
-						});
-					}
-				}
-				if(mProgressStatus == 100) {
-					itemsSelected.add(-1);
-					Log.i("ITEMSELECTED", "-1");
-					timeForAnswer.add(mProgressStatus);
-				}
-				runOnUiThread(new Runnable() {
-					public void run() {
-						int n = calcularPuntuacion();
-						Log.i("ANTES DEL ALERTDIALOG", "wiiiii");
-						confirmDialog("PUNTUACION: " + n).show();
-					}
-				});
-			}
-		}).start();
-
 	}
-
+	
+	/**
+	 * Pinta la respuesta seleccionada y la solcuión. Guarda si ha habido o no acierto
+	 * <br><br>
+	 * Atención: este método actualiza la UI, ejecutar siempre en el hilo principal.
+	 */
+	private void pintarSoluciones(int pulsada, int solucion) {
+		// Verde: #99CC00
+		// Rojo: FF4444
+		// Amarillo: FF8800 (para timeout)
+		if (pulsada == -1) {
+			Log.i("UIThread", "Pinto la solución de amarillo");
+			mListView.getChildAt(soluciones.get(0)).setBackgroundColor(
+			Color.parseColor("#FF8800"));
+			aciertos.add(false);
+		}
+		else if (pulsada == solucion) {
+			Log.i("UIThread", "Pinto la solución de verde");
+			mListView.getChildAt(pulsada).setBackgroundColor(Color.parseColor("#99CC00"));
+			aciertos.add(true);
+		}
+		else {
+			Log.i("UIThread", "Pinto la respuesta de rojo y la solución de verde");
+			mListView.getChildAt(pulsada).setBackgroundColor(Color.parseColor("#FF4444"));
+			mListView.getChildAt(soluciones.get(0)).setBackgroundColor(
+					Color.parseColor("#99CC00"));
+			aciertos.add(false);
+		}
+		mListView.invalidate();
+	}
+	
+	/**
+	 * Extrae y una pregunta con sus respuestas y las pone en mListView.
+	 * <br><br>
+	 * Atención: este método actualiza la UI, ejecutar siempre en el hilo principal.
+	 */
 	private void actualizarPregunta() {
+		
 		mTextView.setText(preguntas.get(0));
 		preguntas.remove(0);
 		mListView.setAdapter(new ArrayAdapter<String>(this,
@@ -149,16 +157,98 @@ public class PantallaJuego extends Activity {
 		respuestas.remove(0);
 	}
 	
-	private int calcularPuntuacion() {
-		int n = 0;
-		for(Boolean b: aciertos){
-			if(b) n++;
-		}
-		int time = 0;
-		for(Integer i: timeForAnswer) {
-			time += i;
-		}
-		return n*10000/aciertos.size()/time;
+	/**
+	 * Hilo que controla la el tiempo de la partida a través de una barra de progreso.
+	 * 
+	 * @return Thread progreso
+	 */
+	private Thread progreso() {
+		// Start lengthy operation in a background thread
+				return new Thread(new Runnable() {
+					public synchronized void run() {
+						mProgressStatus = 0;
+						while (mProgressStatus <= 101) {
+							try {
+								Thread.sleep(100);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+							if(!barraBloqueada) {
+								mProgressStatus++;
+								// Update the progress bar
+								mHandler.post(new Runnable() {
+									public void run() {
+										Log.i("ACTUALIZA BARRA", "mProgressStatus = "
+												+ mProgressStatus);
+										mProgressBar.setProgress(mProgressStatus);
+									}
+								});
+							}
+							
+							// Si quedan más preguntas me quedo en el bucle
+							if (mProgressStatus == 100 && preguntas.size() != 0) {
+								runOnUiThread(new Runnable() {
+									public void run() {
+										itemsSelected.add(-1);
+										Log.i("ITEMSELECTED", "-1");
+										pintarSoluciones(-1, soluciones.get(0));
+										soluciones.remove(0);
+										timeForAnswer.add(mProgressStatus);
+										mProgressStatus = 0;
+									}
+								});
+								// Para dos segundos antes de sacar la siguiente pregunta
+								try {
+									Thread.sleep(2000);
+								} catch (InterruptedException e) {
+									// TODO Auto-generated catch block
+									e.printStackTrace();
+								}
+								mHandler.post(new Runnable() {
+									public void run() {
+										Log.i("HANDLER", "saco la siguiente pregunta");
+										actualizarPregunta();
+									}
+								});
+							}
+						}
+						// Al salir del bucle
+						if(mProgressStatus == 102) {
+							runOnUiThread(new Runnable() {
+								public void run() {
+									itemsSelected.add(-1);
+									Log.i("ITEMSELECTED", "-1");
+									pintarSoluciones(-1, soluciones.get(0));
+									soluciones.remove(0);
+									timeForAnswer.add(mProgressStatus);
+								}
+							});
+							// Para dos segundos
+							try {
+								Thread.sleep(2000);
+							} catch (InterruptedException e) {
+								// TODO Auto-generated catch block
+								e.printStackTrace();
+							}
+						}
+						runOnUiThread(new Runnable() {
+							public void run() {
+								int n = calcularPuntuacion();
+								guardarPuntuacion();
+								confirmDialog("PUNTUACION: " + n).show();
+							}
+						});
+					}
+				});
+	}
+	
+	protected int calcularPuntuacion() {
+		return 0;
+	}
+	
+	protected void guardarPuntuacion() {
+		return;
 	}
 	
 	private AlertDialog confirmDialog(String titulo) {
@@ -177,7 +267,7 @@ public class PantallaJuego extends Activity {
 	}
 
 	// Este método es para probar. Su funcionalidad será parte del modelo
-	private void crearJuego() {
+	protected void crearJuego() {
 		preguntas.add("p 1");
 		preguntas.add("p 2");
 		preguntas.add("p 3");
@@ -202,4 +292,10 @@ public class PantallaJuego extends Activity {
 		soluciones.add(2);
 	}
 
+	@Override
+	public void onBackPressed() {
+		// No se puede volver a la pantalla principal en medio de una partida
+		return;
+	}
+	
 }
