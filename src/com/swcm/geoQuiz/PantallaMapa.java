@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -34,6 +35,8 @@ public class PantallaMapa extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pantalla_mapa);
 
+		Log.i("GOOGLE SERVICE", ""+GooglePlayServicesUtil.isGooglePlayServicesAvailable(this));
+		
 		setUpMapIfNeeded();
 		mMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
 
