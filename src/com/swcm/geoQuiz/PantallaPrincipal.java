@@ -1,8 +1,5 @@
 package com.swcm.geoQuiz;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -14,8 +11,6 @@ import android.view.View;
 import android.widget.Toast;
 
 public class PantallaPrincipal extends Activity {
-
-	private static List<Integer> index = new ArrayList<Integer>();
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +54,6 @@ public class PantallaPrincipal extends Activity {
 	}
 
 	public void onClick(View view) {
-		PantallaPrincipal.index.clear();
 		switch (view.getId()) {
 		case R.id.infoButton:
 			about();
@@ -73,7 +67,6 @@ public class PantallaPrincipal extends Activity {
 		case R.id.mapaButton:
 			irAlMapa();
 		}
-	
 	}
 
 	private void irAlMapa() {
