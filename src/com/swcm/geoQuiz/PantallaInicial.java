@@ -27,7 +27,6 @@ public class PantallaInicial extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		overridePendingTransition(0, 0);
 		setContentView(R.layout.activity_pantalla_inicial);
 		// Timer thread
 		Thread splashTimer = new Thread() {

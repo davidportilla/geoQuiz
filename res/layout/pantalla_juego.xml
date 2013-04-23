@@ -3,14 +3,14 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="#ff444444"
-    tools:context=".PantallaInicial" >
+    tools:context=".PantallaJuego" >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:layout_margin="16dp"
-        android:background="@drawable/custom_border"
+        android:background="@drawable/custom_shape"
         android:gravity="center"
         android:orientation="vertical" >
 

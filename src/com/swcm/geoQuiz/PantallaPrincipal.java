@@ -70,7 +70,16 @@ public class PantallaPrincipal extends Activity {
 		case R.id.capitalesButton:
 			confirmDialog("Pulse OK para empezar", "capitales").show();
 			break;
+		case R.id.mapaButton:
+			irAlMapa();
 		}
+	
+	}
+
+	private void irAlMapa() {
+		Intent i = new Intent(PantallaPrincipal.this, PantallaMapa.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(i);
 	}
 
 }

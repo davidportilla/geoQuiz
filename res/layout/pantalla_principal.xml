@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@drawable/pantalla1"
-    tools:context=".PantallaInicial" >
+    tools:context=".PantallaPrincipal" >
     
 	<ImageButton
         android:id="@+id/infoButton"
@@ -27,12 +27,23 @@
         android:text="@string/capitalesButton" />
 
     <Button
+        android:id="@+id/mapaButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/capitalesButton"
+        android:layout_marginTop="23dp"
+        android:onClick="onClick"
+        android:text="@string/mapaButton"
+        android:color="#38B5E5" />
+
+    <Button
         android:id="@+id/orientacionButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/infoButton"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="99dp"
         android:onClick="onClick"
         android:text="@string/orientacionButton"
         android:color="#38B5E5" />

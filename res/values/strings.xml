@@ -6,5 +6,6 @@
     <string name="infoButtonDescription">infoButton</string>
     <string name="orientacionButton">Orientación</string>
     <string name="capitalesButton">Capitales</string>
+    <string name="mapaButton">Consultar mapa</string>
 
 </resources>

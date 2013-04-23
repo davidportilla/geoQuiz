@@ -76,9 +76,9 @@ public class PantallaJuego extends Activity {
 	private void configuraListener() {
 		mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
-			public synchronized void onItemClick(AdapterView<?> arg0,
+			public void onItemClick(AdapterView<?> arg0,
 					View arg1, int position, long arg3) {
-
+				
 				pintarSoluciones(position, soluciones.get(0));
 				
 				timeForAnswer.add(mProgressStatus);
@@ -87,7 +87,6 @@ public class PantallaJuego extends Activity {
 				Log.i("ITEMSELECTED", "" + position);
 
 				if (preguntas.size() != 0) {
-					mProgressStatus = 0;
 					Log.i("PULSADO", "mProgressStatus = " + mProgressStatus);
 					// Para dos segundos antes de sacar la siguiente pregunta
 					mHandler.post(new Runnable() {
@@ -165,7 +164,7 @@ public class PantallaJuego extends Activity {
 	private Thread progreso() {
 		// Start lengthy operation in a background thread
 				return new Thread(new Runnable() {
-					public synchronized void run() {
+					public void run() {
 						mProgressStatus = 0;
 						while (mProgressStatus <= 101) {
 							try {
