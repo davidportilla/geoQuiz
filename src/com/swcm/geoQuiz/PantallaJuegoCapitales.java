@@ -5,10 +5,38 @@ import java.util.List;
 
 import android.util.Log;
 
+import com.swcm.geoQuiz.model.ElementoJuego;
+import com.swcm.geoQuiz.model.Juego;
+
 public class PantallaJuegoCapitales extends PantallaJuego{
 
+	/*@Override
+	public void crearJuego() {
+		preguntas.add("Capital de España");
+		preguntas.add("Capital de Portugal");
+		preguntas.add("Capital de Alemania");
+		final List<String> resp0 = new ArrayList<String>();
+		final List<String> resp1 = new ArrayList<String>();
+		final List<String> resp2 = new ArrayList<String>();
+		resp0.add("Madrid");
+		resp0.add("Barcelona");
+		resp0.add("Bilbao");
+		resp1.add("Lisboa");
+		resp1.add("Oporto");
+		resp2.add("Múnich");
+		resp2.add("Bonn");
+		resp2.add("Berlín");
+		respuestas.add(resp0);
+		respuestas.add(resp1);
+		respuestas.add(resp2);
+		soluciones.add(0);
+		soluciones.add(0);
+		soluciones.add(2);
+	}*/
+	
 	@Override
 	public void crearJuego() {
+				
 		preguntas.add("Capital de España");
 		preguntas.add("Capital de Portugal");
 		preguntas.add("Capital de Alemania");

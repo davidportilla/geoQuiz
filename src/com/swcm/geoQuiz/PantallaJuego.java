@@ -18,6 +18,8 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.swcm.geoQuiz.model.DbHelper;
+
 /**
  * Clase Pantalla Juego <br>
  * <br>
@@ -50,13 +52,13 @@ public class PantallaJuego extends Activity {
 	protected List<Integer> itemsSelected = new ArrayList<Integer>();
 	protected List<Boolean> aciertos = new ArrayList<Boolean>();
 	protected List<Integer> timeForAnswer = new ArrayList<Integer>();
-
+	
 	/**
 	 * 
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-
+		
 		crearJuego();
 
 		super.onCreate(savedInstanceState);
@@ -291,6 +293,16 @@ public class PantallaJuego extends Activity {
 	public void onBackPressed() {
 		// No se puede volver a la pantalla principal en medio de una partida
 		return;
+	}
+	
+	@Override
+	public void onResume() {
+
+	}
+	
+	@Override
+	public void onPause() {
+
 	}
 
 }
