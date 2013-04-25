@@ -284,28 +284,7 @@ public class PantallaJuego extends Activity {
 
 	// Este método es para probar. Su funcionalidad será parte del modelo
 	protected void crearJuego() {
-		preguntas.add("p 1");
-		preguntas.add("p 2");
-		preguntas.add("p 3");
-		final List<String> resp0 = new ArrayList<String>();
-		final List<String> resp1 = new ArrayList<String>();
-		final List<String> resp2 = new ArrayList<String>();
-		resp0.add("resp0");
-		resp0.add("resp1");
-		resp0.add("resp2");
-		resp1.add("resp4");
-		resp1.add("resp5");
-		resp1.add("resp6");
-		resp1.add("resp7");
-		resp2.add("resp8");
-		resp2.add("resp9");
-		resp2.add("resp10");
-		respuestas.add(resp0);
-		respuestas.add(resp1);
-		respuestas.add(resp2);
-		soluciones.add(0);
-		soluciones.add(1);
-		soluciones.add(2);
+
 	}
 
 	@Override
