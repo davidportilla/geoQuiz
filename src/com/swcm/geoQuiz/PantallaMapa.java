@@ -50,8 +50,10 @@ public class PantallaMapa extends FragmentActivity {
 		}
 
 		setUpMapIfNeeded();
-		mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
 
+		if (mMap != null) {
+			mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+		}
 	}
 
 	/*
@@ -61,79 +63,89 @@ public class PantallaMapa extends FragmentActivity {
 
 	public void onClickButton(View view) {
 
-		if (editText1.getText().length() != 0
-				&& editText2.getText().length() != 0) {
-			if (editText1.getText() != null) {
-				ciudad1 = editText1.getText().toString();
+		Log.i("ONCLICK MAPA", "Submit");
+		if (mMap != null) {
+			Log.i("ONCLICK MAPA", "hay mapa");
+			if (editText1.getText().length() != 0
+					&& editText2.getText().length() != 0) {
+				if (editText1.getText() != null) {
+					ciudad1 = editText1.getText().toString();
+				}
+				if (editText2.getText() != null) {
+					ciudad2 = editText2.getText().toString();
+				}
+
+				List<Address> foundGeocode1 = null;
+				List<Address> foundGeocode2 = null;
+				/*
+				 * find the addresses by using getFromLocationName() method with
+				 * the given address
+				 */
+				try {
+					foundGeocode1 = new Geocoder(this).getFromLocationName(
+							ciudad1, 1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				try {
+					foundGeocode2 = new Geocoder(this).getFromLocationName(
+							ciudad2, 1);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+				double lat1 = 0;
+				double long1 = 0;
+				double lat2 = 0;
+				double long2 = 0;
+
+				if (foundGeocode1 != null) {
+					lat1 = foundGeocode1.get(0).getLatitude(); // getting
+																// latitude
+					long1 = foundGeocode1.get(0).getLongitude(); // getting
+																	// longitude
+					Log.i("COORDENADAS", "punto 1: " + lat1 + ", " + long1);
+				}
+
+				if (foundGeocode2 != null) {
+					lat2 = foundGeocode2.get(0).getLatitude();
+					long2 = foundGeocode2.get(0).getLongitude();
+					Log.i("COORDENADAS", "punto 2: " + lat2 + ", " + long2);
+				}
+
+				LatLng ll1 = new LatLng(lat1, long1);
+				LatLng ll2 = new LatLng(lat2, long2);
+
+				String s = ciudad1 + ": " + ll1.toString() + "\n\n" + ciudad2
+						+ ": " + ll2.toString();
+
+				confirmDialog("Coordenadas", s).show();
+
+				LatLng media = new LatLng((lat1 + lat2) / 2,
+						(long1 + long2) / 2);
+
+				setUpMapIfNeeded();
+				try {
+					mMap.moveCamera(CameraUpdateFactory.newLatLng(media));
+					mMap.addMarker(new MarkerOptions().position(ll1).title(
+							ciudad1 + ": " + ll1.toString()));
+					mMap.addMarker(new MarkerOptions().position(ll2).title(
+							ciudad2 + ": " + ll2.toString()));
+				} catch (Exception e) {
+					Log.e("MAPA", "Error al tocar el mapa");
+				}
+
+				// mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new
+				// LatLng(lat1,
+				// long1), 15));
+				// Zoom in, animating the camera.
+				// mMap.animateCamera(CameraUpdateFactory.zoomIn());
 			}
-			if (editText2.getText() != null) {
-				ciudad2 = editText2.getText().toString();
-			}
-
-			List<Address> foundGeocode1 = null;
-			List<Address> foundGeocode2 = null;
-			/*
-			 * find the addresses by using getFromLocationName() method with the
-			 * given address
-			 */
-			try {
-				foundGeocode1 = new Geocoder(this).getFromLocationName(ciudad1,
-						1);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			try {
-				foundGeocode2 = new Geocoder(this).getFromLocationName(ciudad2,
-						1);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			double lat1 = 0;
-			double long1 = 0;
-			double lat2 = 0;
-			double long2 = 0;
-
-			if (foundGeocode1 != null) {
-				lat1 = foundGeocode1.get(0).getLatitude(); // getting latitude
-				long1 = foundGeocode1.get(0).getLongitude(); // getting
-																// longitude
-				Log.i("COORDENADAS", "punto 1: " + lat1 + ", " + long1);
-			}
-
-			if (foundGeocode2 != null) {
-				lat2 = foundGeocode2.get(0).getLatitude();
-				long2 = foundGeocode2.get(0).getLongitude();
-				Log.i("COORDENADAS", "punto 2: " + lat2 + ", " + long2);
-			}
-
-			LatLng ll1 = new LatLng(lat1, long1);
-			LatLng ll2 = new LatLng(lat2, long2);
-
-			String s = ciudad1 + ": " + ll1.toString() + "\n\n" + ciudad2
-					+ ": " + ll2.toString();
-
-			confirmDialog(s).show();
-
-			LatLng media = new LatLng((lat1 + lat2) / 2, (long1 + long2) / 2);
-
-			setUpMapIfNeeded();
-			try {
-				mMap.moveCamera(CameraUpdateFactory.newLatLng(media));
-				mMap.addMarker(new MarkerOptions().position(ll1).title(
-						ciudad1 + ": " + ll1.toString()));
-				mMap.addMarker(new MarkerOptions().position(ll2).title(
-						ciudad2 + ": " + ll2.toString()));
-			} catch (Exception e) {
-				Log.e("MAPA", "Error al tocar el mapa");
-			}
-
-			// mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new
-			// LatLng(lat1,
-			// long1), 15));
-			// Zoom in, animating the camera.
-			// mMap.animateCamera(CameraUpdateFactory.zoomIn());
+		} else {
+			Log.i("ONCLICK MAPA", "no hay mapa");
+			confirmDialog("Mapas no disponibles",
+					"Compruebe su conexión a Internet").show();
 		}
 
 	}
@@ -155,9 +167,9 @@ public class PantallaMapa extends FragmentActivity {
 		}
 	}
 
-	private AlertDialog confirmDialog(String mensaje) {
+	private AlertDialog confirmDialog(String titulo, String mensaje) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
-		builder.setTitle("Coordenadas");
+		builder.setTitle(titulo);
 		builder.setMessage(mensaje);
 		CharSequence text = "OK";
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {

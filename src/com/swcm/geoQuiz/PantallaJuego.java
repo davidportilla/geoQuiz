@@ -6,7 +6,6 @@ import java.util.List;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,8 +16,6 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import com.swcm.geoQuiz.model.DbHelper;
 
 /**
  * Clase Pantalla Juego <br>
@@ -52,13 +49,13 @@ public class PantallaJuego extends Activity {
 	protected List<Integer> itemsSelected = new ArrayList<Integer>();
 	protected List<Boolean> aciertos = new ArrayList<Boolean>();
 	protected List<Integer> timeForAnswer = new ArrayList<Integer>();
-	
+
 	/**
 	 * 
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		
+
 		crearJuego();
 
 		super.onCreate(savedInstanceState);
@@ -85,7 +82,7 @@ public class PantallaJuego extends Activity {
 
 				if (!listenerBloqueado) {
 					listenerBloqueado = true;
-					
+
 					pintarSoluciones(position, soluciones.get(0));
 
 					timeForAnswer.add(mProgressStatus);
@@ -117,9 +114,8 @@ public class PantallaJuego extends Activity {
 						// del bucle.
 						mProgressStatus = 200;
 					}
-				}
-				else {
-					Log.i("ONCLICKLISTENER","cerrojo puesto");
+				} else {
+					Log.i("ONCLICKLISTENER", "cerrojo puesto");
 				}
 			}
 		});
@@ -196,8 +192,8 @@ public class PantallaJuego extends Activity {
 						// Update the progress bar
 						mHandler.post(new Runnable() {
 							public void run() {
-								//Log.i("ACTUALIZA BARRA", "mProgressStatus = "
-								//		+ mProgressStatus);
+								// Log.i("ACTUALIZA BARRA", "mProgressStatus = "
+								// + mProgressStatus);
 								mProgressBar.setProgress(mProgressStatus);
 							}
 						});
@@ -261,24 +257,17 @@ public class PantallaJuego extends Activity {
 		});
 	}
 
-	protected int calcularPuntuacion() {
-		return 0;
-	}
-
-	protected void guardarPuntuacion() {
-		return;
-	}
-
 	private AlertDialog confirmDialog(String titulo) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(titulo);
 		CharSequence text = "OK";
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
-				Intent i = new Intent(PantallaJuego.this,
+				finish();
+				/*Intent i = new Intent(PantallaJuego.this,
 						PantallaPrincipal.class);
 				i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivity(i);
+				startActivity(i);*/
 			}
 		});
 		return builder.create();
@@ -289,20 +278,28 @@ public class PantallaJuego extends Activity {
 
 	}
 
+	public int calcularPuntuacion() {
+		return 0;
+	}
+	
+	public void guardarPuntuacion() {
+		
+	}
+	
 	@Override
 	public void onBackPressed() {
 		// No se puede volver a la pantalla principal en medio de una partida
 		return;
 	}
-	
+
 	@Override
 	public void onResume() {
-
+		super.onResume();
 	}
-	
+
 	@Override
 	public void onPause() {
-
+		super.onPause();
 	}
 
 }

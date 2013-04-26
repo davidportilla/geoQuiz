@@ -1,7 +1,5 @@
 package com.swcm.geoQuiz;
 
-import com.swcm.geoQuiz.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -55,7 +53,6 @@ public class PantallaInicial extends Activity {
 		};
 		splashTimer.start();
 		
-		//Copiar la base de datos a la memoria interna aquí
 	}
 
 	/**

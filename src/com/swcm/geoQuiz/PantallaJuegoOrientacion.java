@@ -1,5 +1,71 @@
 package com.swcm.geoQuiz;
 
-public class PantallaJuegoOrientacion extends PantallaJuego{
+import java.util.ArrayList;
+import java.util.List;
 
+import android.os.Bundle;
+import android.util.Log;
+
+public class PantallaJuegoOrientacion extends PantallaJuego {
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+	
+	@Override
+	public void crearJuego() {
+
+		preguntas.add("Capital de España");
+		preguntas.add("Capital de Portugal");
+		preguntas.add("Capital de Alemania");
+		final List<String> resp0 = new ArrayList<String>();
+		final List<String> resp1 = new ArrayList<String>();
+		final List<String> resp2 = new ArrayList<String>();
+		resp0.add("Madrid");
+		resp0.add("Barcelona");
+		resp0.add("Bilbao");
+		resp1.add("Lisboa");
+		resp1.add("Oporto");
+		resp2.add("Múnich");
+		resp2.add("Bonn");
+		resp2.add("Berlín");
+		respuestas.add(resp0);
+		respuestas.add(resp1);
+		respuestas.add(resp2);
+		soluciones.add(0);
+		soluciones.add(0);
+		soluciones.add(2);
+	}
+
+	@Override
+	public int calcularPuntuacion() {
+		int n = 0;
+		for (Boolean b : aciertos) {
+			if (b)
+				n++;
+		}
+		int time = 0;
+		for (Integer i : timeForAnswer) {
+			time += i;
+		}
+		Log.i("ACIERTOS", "" + n);
+		Log.i("TIEMPO", "" + time);
+		return n * 10000 / aciertos.size() / time;
+	}
+
+	@Override
+	public void guardarPuntuacion() {
+
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+	}
+	
+	@Override
+	public void onPause() {
+		super.onPause();
+	}
 }
