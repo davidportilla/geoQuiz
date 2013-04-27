@@ -2,8 +2,12 @@ package com.swcm.geoQuiz;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+
+import com.swcm.geoQuiz.model.DbOpenHelper;
 
 public class PantallaInicial extends Activity {
 
@@ -52,7 +56,21 @@ public class PantallaInicial extends Activity {
 			}
 		};
 		splashTimer.start();
-		
+
+		// Inicializa la tabla de ciudades si está vacía
+		DbOpenHelper db = new DbOpenHelper(this);
+		SQLiteDatabase sql = db.getReadableDatabase();
+		Cursor mCursor = sql.rawQuery("SELECT * FROM " + "ciudades", null);
+		boolean rowExists;
+		if (mCursor.moveToFirst()) {
+			rowExists = true;
+		} else {
+			// EMPTY
+			rowExists = false;
+		}
+		if (!rowExists) {
+			db.inicializa(getApplicationContext());
+		}
 	}
 
 	/**

@@ -41,5 +41,10 @@ public class Puntuacion {
 	public String getFecha() {
 		return this.fecha;
 	}
+	
+	@Override
+	public String toString() {
+		return nombre + "   " + puntuacion + "   " + fecha;
+	}
 
 }

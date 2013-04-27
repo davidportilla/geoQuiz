@@ -53,6 +53,36 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(DB_TABLE_CREATE_CITIES);
 		db.execSQL(DB_TABLE_CREATE_SCORES);
+		
+	}
+
+	public void inicializa(Context context) {
+		List<Ciudad> ciudades = new ArrayList<Ciudad>();
+		ciudades.add(new Ciudad("Madrid", "España", 1));
+		ciudades.add(new Ciudad("Barcelona", "España", 0));
+		ciudades.add(new Ciudad("Bilbao", "España", 0));
+		ciudades.add(new Ciudad("Valencia", "España", 0));
+		ciudades.add(new Ciudad("Londres", "Inglaterra", 1));
+		ciudades.add(new Ciudad("París", "Francia", 1));
+		ciudades.add(new Ciudad("Lyon", "Francia", 0));
+		ciudades.add(new Ciudad("Berlín", "Alemania", 1));
+		ciudades.add(new Ciudad("Lisboa", "Portugal", 1));
+		ciudades.add(new Ciudad("Oporto", "Portugal", 0));
+		ciudades.add(new Ciudad("Estocolmo", "Suecia", 1));
+		ciudades.add(new Ciudad("Tampere", "Finlandia", 0));
+		ciudades.add(new Ciudad("Helsinki", "Finlandia", 1));
+		ciudades.add(new Ciudad("Roma", "Italia", 1));
+		ciudades.add(new Ciudad("Milan", "Italia", 0));
+		ciudades.add(new Ciudad("Venecia", "Italia", 0));
+		ciudades.add(new Ciudad("Graz", "Austria", 0));
+		ciudades.add(new Ciudad("Sao Paulo", "Brasil", 0));
+		ciudades.add(new Ciudad("Río de Janeiro", "Brasil", 0));
+		ciudades.add(new Ciudad("Brasilia", "Brasil", 1));
+		for(Ciudad c: ciudades) {
+			c.setCoordenadas(context);
+			addCity(c);
+		}
+		
 	}
 
 	/**
@@ -74,7 +104,6 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	 */
 	public void addCity(Ciudad c) {
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
 	    ContentValues values = new ContentValues();
 	    values.put(KEY_CIUDAD, c.getNombre());
 	    values.put(KEY_PAIS, c.getPais());

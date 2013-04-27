@@ -11,36 +11,37 @@ import android.view.View;
 import android.widget.Toast;
 
 public class PantallaPrincipal extends Activity {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pantalla_principal);
 	}
-		
+
 	private AlertDialog confirmDialog(String titulo, final String modoDeJuego) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(titulo);
 		CharSequence text = "OK";
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int id) {
-            	if (modoDeJuego.equals("capitales")){
-            		Intent i = new Intent(PantallaPrincipal.this,
-    						PantallaJuegoCapitales.class);
-    				i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-    				startActivity(i);
-            	}if (modoDeJuego.equals("orientacion")){
-            		Intent i = new Intent(PantallaPrincipal.this,
-    						PantallaJuegoOrientacion.class);
-    				i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-    				startActivity(i);
-            	}
-            	
-            }
-        });
+			public void onClick(DialogInterface dialog, int id) {
+				if (modoDeJuego.equals("capitales")) {
+					Intent i = new Intent(PantallaPrincipal.this,
+							PantallaJuegoCapitales.class);
+					i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					startActivity(i);
+				}
+				if (modoDeJuego.equals("orientacion")) {
+					Intent i = new Intent(PantallaPrincipal.this,
+							PantallaJuegoOrientacion.class);
+					i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+					startActivity(i);
+				}
+
+			}
+		});
 		return builder.create();
 	}
-	
+
 	private void about() {
 		Context context = getApplicationContext();
 		CharSequence text = "Álvaro Pérez Ramón" + '\n'
@@ -58,6 +59,9 @@ public class PantallaPrincipal extends Activity {
 		case R.id.infoButton:
 			about();
 			break;
+		case R.id.scoresButton:
+			scores();
+			break;
 		case R.id.orientacionButton:
 			confirmDialog("Pulse OK para empezar", "orientacion").show();
 			break;
@@ -67,6 +71,13 @@ public class PantallaPrincipal extends Activity {
 		case R.id.mapaButton:
 			irAlMapa();
 		}
+	}
+
+	private void scores() {
+		Intent i = new Intent(PantallaPrincipal.this,
+				PantallaPuntuaciones.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(i);
 	}
 
 	private void irAlMapa() {
