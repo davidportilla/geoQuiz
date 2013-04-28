@@ -17,6 +17,7 @@ public class PantallaJuegoCapitales extends PantallaJuego {
 	private DbOpenHelper db = new DbOpenHelper(this);
 	private static final int NUM_PREGUNTAS = 7;
 	private static final int NUM_RESPUESTAS = 5;
+	private final String MODO = "Capitales";
 
 	@Override
 	public void crearJuego() {
@@ -116,7 +117,7 @@ public class PantallaJuegoCapitales extends PantallaJuego {
 		String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		db.getWritableDatabase();
 		Log.d("Insert: ", "Inserting ..");
-		Puntuacion p = new Puntuacion("David", calcularPuntuacion(), today);
+		Puntuacion p = new Puntuacion("David", calcularPuntuacion(), "capitales" ,today);
 		db.addPuntuacion(p);
 	}
 	

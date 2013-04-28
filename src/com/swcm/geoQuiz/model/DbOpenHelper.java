@@ -8,6 +8,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DbOpenHelper extends SQLiteOpenHelper {
 
@@ -27,6 +28,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	private static final String KEY_NOMBRE = "nombre";
 	private static final String KEY_PUNTUACION = "puntuacion";
 	private static final String KEY_FECHA = "fecha";
+	private static final String KEY_MODO = "modo";
 	
 	private static final String DB_TABLE_CREATE_CITIES = "CREATE TABLE "
 			+ TABLE_CITIES + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
@@ -35,7 +37,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
 	private static final String DB_TABLE_CREATE_SCORES = "CREATE TABLE "
 			+ TABLE_SCORES + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-			+ KEY_NOMBRE + " TEXT, " + KEY_PUNTUACION + " INTEGER, " + KEY_FECHA + " TEXT);";
+			+ KEY_NOMBRE + " TEXT, " + KEY_PUNTUACION + " INTEGER, " + KEY_MODO + " STRING, " + KEY_FECHA + " TEXT);";
 	
 	/**
 	 * Constructor para crear una base de datos
@@ -79,7 +81,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 		ciudades.add(new Ciudad("Amsterdam", "Países Bajos", 1));
 		ciudades.add(new Ciudad("Budapest", "Hungría", 1));
 		ciudades.add(new Ciudad("Dublín", "Irlanda", 1));
-		ciudades.add(new Ciudad("Reykjavik", "Islandia", 1));
+		ciudades.add(new Ciudad("Reikiavik", "Islandia", 1));
 		ciudades.add(new Ciudad("Roma", "Italia", 1));
 		
 		ciudades.add(new Ciudad("Barcelona", "España", 0));
@@ -237,7 +239,9 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	    ContentValues values = new ContentValues();
 	    values.put(KEY_NOMBRE, p.getNombre());
 	    values.put(KEY_PUNTUACION, p.getPuntuacion());
+	    values.put(KEY_MODO, p.getModo());
 	    values.put(KEY_FECHA, p.getFecha());
+	    
 	    
 	    // Inserting Row
 	    db.insert(TABLE_SCORES, null, values);
@@ -262,7 +266,8 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	            Puntuacion p = new Puntuacion();
 	            p.setNombre(cursor.getString(1));
 	            p.setPuntuacion(Integer.parseInt(cursor.getString(2)));
-	            p.setFecha(cursor.getString(3));
+	            p.setModo(cursor.getString(3));
+	            p.setFecha(cursor.getString(4));
 	            // Adding score to list
 	            puntuaciones.add(p);
 	        } while (cursor.moveToNext());

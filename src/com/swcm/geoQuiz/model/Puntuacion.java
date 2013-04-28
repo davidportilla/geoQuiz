@@ -5,6 +5,7 @@ public class Puntuacion {
 	private String nombre;
 	private int puntuacion;
 	private String fecha;
+	private String modo;
 	
 	public Puntuacion() {
 		this.nombre = "";
@@ -12,8 +13,9 @@ public class Puntuacion {
 		this.fecha = "";
 	}
 	
-	public Puntuacion(String nombre, int puntuacion, String fecha) {
+	public Puntuacion(String nombre, int puntuacion, String modo, String fecha) {
 		this.nombre = nombre;
+		this.modo = modo;
 		this.puntuacion = puntuacion;
 		this.fecha = fecha;
 	}
@@ -38,8 +40,15 @@ public class Puntuacion {
 		return this.puntuacion;
 	}
 
+	public void setModo(String Modo){
+		this.modo = Modo;
+	}
 	public String getFecha() {
 		return this.fecha;
+	}
+	
+	public String getModo(){
+		return this.modo;
 	}
 	
 	@Override

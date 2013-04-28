@@ -52,7 +52,7 @@ public class Ciudad {
 		if (foundGeocode != null) {
 			this.latitud = foundGeocode.get(0).getLatitude(); // getting latitude
 			this.longitud = foundGeocode.get(0).getLongitude(); // getting longitude
-			Log.i("COORDENADAS", this.nombre + ": " + this.latitud + ", " + this.longitud);
+			//Log.i("COORDENADAS", this.nombre + ": " + this.latitud + ", " + this.longitud);
 		}
 	}
 	
