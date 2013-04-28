@@ -46,5 +46,5 @@ public class Puntuacion {
 	public String toString() {
 		return nombre + "   " + puntuacion + "   " + fecha;
 	}
-
+	
 }

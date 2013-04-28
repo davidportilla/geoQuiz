@@ -53,31 +53,51 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		db.execSQL(DB_TABLE_CREATE_CITIES);
 		db.execSQL(DB_TABLE_CREATE_SCORES);
-		
 	}
 
 	public void inicializa(Context context) {
 		List<Ciudad> ciudades = new ArrayList<Ciudad>();
+		
+		ciudades.add(new Ciudad("Tirana", "Albania", 1));
+		ciudades.add(new Ciudad("Berlín", "Alemania", 1));
+		ciudades.add(new Ciudad("Erevan", "Armenia", 1));
+		ciudades.add(new Ciudad("Viena", "Austria", 1));
+		ciudades.add(new Ciudad("Bakú", "Azerbaiyan", 1));
+		ciudades.add(new Ciudad("Bruselas", "Bélgica", 1));
+		ciudades.add(new Ciudad("Sarajevo", "Bosnia-Heregovina", 1));
+		ciudades.add(new Ciudad("Sofía", "Bulgaria", 1));
+		ciudades.add(new Ciudad("Nicosia", "Chipre", 1));
+		ciudades.add(new Ciudad("Zagreb", "Croacia", 1));
+		ciudades.add(new Ciudad("Copenhague", "Dinamarca", 1));
+		ciudades.add(new Ciudad("Liubliana", "Eslovenia", 1));
 		ciudades.add(new Ciudad("Madrid", "España", 1));
+		ciudades.add(new Ciudad("Tallin", "Estonia", 1));
+		ciudades.add(new Ciudad("Helsinki", "Finlandia", 1));
+		ciudades.add(new Ciudad("París", "Francia", 1));
+		ciudades.add(new Ciudad("Tiflis", "Georgia", 1));
+		ciudades.add(new Ciudad("Atenas", "Grecia", 1));
+		ciudades.add(new Ciudad("Amsterdam", "Países Bajos", 1));
+		ciudades.add(new Ciudad("Budapest", "Hungría", 1));
+		ciudades.add(new Ciudad("Dublín", "Irlanda", 1));
+		ciudades.add(new Ciudad("Reykjavik", "Islandia", 1));
+		ciudades.add(new Ciudad("Roma", "Italia", 1));
+		
 		ciudades.add(new Ciudad("Barcelona", "España", 0));
 		ciudades.add(new Ciudad("Bilbao", "España", 0));
 		ciudades.add(new Ciudad("Valencia", "España", 0));
 		ciudades.add(new Ciudad("Londres", "Inglaterra", 1));
-		ciudades.add(new Ciudad("París", "Francia", 1));
 		ciudades.add(new Ciudad("Lyon", "Francia", 0));
-		ciudades.add(new Ciudad("Berlín", "Alemania", 1));
 		ciudades.add(new Ciudad("Lisboa", "Portugal", 1));
 		ciudades.add(new Ciudad("Oporto", "Portugal", 0));
 		ciudades.add(new Ciudad("Estocolmo", "Suecia", 1));
 		ciudades.add(new Ciudad("Tampere", "Finlandia", 0));
-		ciudades.add(new Ciudad("Helsinki", "Finlandia", 1));
-		ciudades.add(new Ciudad("Roma", "Italia", 1));
 		ciudades.add(new Ciudad("Milan", "Italia", 0));
 		ciudades.add(new Ciudad("Venecia", "Italia", 0));
 		ciudades.add(new Ciudad("Graz", "Austria", 0));
 		ciudades.add(new Ciudad("Sao Paulo", "Brasil", 0));
 		ciudades.add(new Ciudad("Río de Janeiro", "Brasil", 0));
 		ciudades.add(new Ciudad("Brasilia", "Brasil", 1));
+		
 		for(Ciudad c: ciudades) {
 			c.setCoordenadas(context);
 			addCity(c);
@@ -243,7 +263,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	            p.setNombre(cursor.getString(1));
 	            p.setPuntuacion(Integer.parseInt(cursor.getString(2)));
 	            p.setFecha(cursor.getString(3));
-	            // Adding contact to list
+	            // Adding score to list
 	            puntuaciones.add(p);
 	        } while (cursor.moveToNext());
 	    }

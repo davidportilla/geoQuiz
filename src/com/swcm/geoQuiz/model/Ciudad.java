@@ -43,7 +43,7 @@ public class Ciudad {
 	public void setCoordenadas(Context context) {
 		List<Address> foundGeocode = null;
 		try {
-			foundGeocode = new Geocoder(context).getFromLocationName(nombre + " " + "pais",
+			foundGeocode = new Geocoder(context).getFromLocationName(nombre + " " + pais,
 					1);
 		} catch (IOException e) {
 			e.printStackTrace();

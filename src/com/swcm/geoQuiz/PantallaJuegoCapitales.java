@@ -15,8 +15,8 @@ import android.util.Log;
 public class PantallaJuegoCapitales extends PantallaJuego {
 
 	private DbOpenHelper db = new DbOpenHelper(this);
-	private static final int NUM_PREGUNTAS = 5;
-	private static final int NUM_RESPUESTAS = 4;
+	private static final int NUM_PREGUNTAS = 7;
+	private static final int NUM_RESPUESTAS = 5;
 
 	@Override
 	public void crearJuego() {
@@ -26,15 +26,18 @@ public class PantallaJuegoCapitales extends PantallaJuego {
 		// Obtengo toda la lista de ciudades
 		List<Ciudad> ciudades = db.getAllCities();
 		
-		// Reordeno aleatoriamente para coger los cinco primeros que salgan
+		// Reordeno aleatoriamente
 		Collections.shuffle(ciudades);
 		
 		// Creo una lista para guardar las respuestas de cada pregunta y la solucion
 		String respuestaCorrecta = "";
-		List<String> respuestasPreguntaX = new ArrayList<String>();
+		
+		// Variable auxiliar
+		int aleatorio = 0;
 		
 		// Para cada pregunta
 		for(int i = 0; i < ciudades.size() ; i++) {
+			List<String> respuestasPreguntaX = new ArrayList<String>();
 			respuestasPreguntaX.clear();
 			// Añado la pregunta si la ciudad es capital
 			if(ciudades.get(i).isCapital() != 0) {
@@ -44,19 +47,32 @@ public class PantallaJuegoCapitales extends PantallaJuego {
 				respuestaCorrecta = ciudades.get(i).getNombre();
 				Log.i("RESPUESTACORRECTA", ciudades.get(i).getNombre());
 				
-				// HASTA AQUÍ FUNCIONA PERFECTO
-				
 				// La añado a las posibles respuestas de la pregunta
 				respuestasPreguntaX.add(respuestaCorrecta);
-				// Además añado otras respuestas a voleo
-				for(int j = 0; j < NUM_RESPUESTAS - 1 ; j++) {
-					respuestasPreguntaX.add(ciudades.get(j+5).getNombre());
-					Log.i("RESPUESTAEXTRA", ciudades.get(j+5).getNombre());
+				
+				// Hay que encontrar otras tres respuestas
+				int k = 0;
+				while(k < NUM_RESPUESTAS - 1) {
+					aleatorio = (int) (Math.random()*ciudades.size());
+					if(!respuestasPreguntaX.contains(ciudades.get(aleatorio).getNombre())) {
+						respuestasPreguntaX.add(ciudades.get(aleatorio).getNombre());
+						Log.w("RESPUESTAEXTRA", ciudades.get(aleatorio).getNombre());
+						k++;
+					}
 				}
+								
 				// Reordeno las respuestas
 				Collections.shuffle(respuestasPreguntaX);
+				
+				// HASTA AQUÍ FUNCIONA PERFECTO
+				
 				// Las meto en respuestas para jugar con ellas
 				respuestas.add(respuestasPreguntaX);
+				
+				for(String s: respuestasPreguntaX){
+					Log.d("RESPX", s);
+				}
+				
 				// Compruebo en qué índice está la solución correcta y la guardo
 				for (int j = 0; j < respuestasPreguntaX.size(); j++) {
 					if(respuestasPreguntaX.get(j).equals(respuestaCorrecta)){
@@ -65,12 +81,13 @@ public class PantallaJuegoCapitales extends PantallaJuego {
 						break;
 					}
 				}
+				
 				// Salimos del bucle si ya tenemos las preguntas que queremos
 				if(preguntas.size() == NUM_PREGUNTAS) {
 					break;
 				}
 			}
-			
+			//Log.i("SOLUCION 0", "" + soluciones.get(0));
 		}
 				
 	}
@@ -101,6 +118,18 @@ public class PantallaJuegoCapitales extends PantallaJuego {
 		Log.d("Insert: ", "Inserting ..");
 		Puntuacion p = new Puntuacion("David", calcularPuntuacion(), today);
 		db.addPuntuacion(p);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		db.close();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		db.getReadableDatabase();
 	}
 
 }

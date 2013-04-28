@@ -1,6 +1,8 @@
 package com.swcm.geoQuiz;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import android.app.Activity;
@@ -34,12 +36,18 @@ public class PantallaPuntuaciones extends Activity {
 	private void fillData() {
 		// Get all of the notes from the database and create the item list
 		List<Puntuacion> l = db.getAllScores();
-		// Ordena la lista de mayores a menores puntuaciones
 
 		if (l == null) {
 			Log.i("FILLDATA", "No hay puntuaciones");
 		}
 
+		// Ordena la lista de mayor a menor puntuacion
+		Collections.sort(l, new Comparator<Puntuacion>() {
+	        @Override public int compare(Puntuacion p1, Puntuacion p2) {
+	            return p2.getPuntuacion() - p1.getPuntuacion();
+	        }
+	    });
+		
 		// Pasa la lista de puntuaciones a una lista de String
 		List<String> values = new ArrayList<String>();
 		for (Puntuacion p : l) {

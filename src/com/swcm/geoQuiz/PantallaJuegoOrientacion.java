@@ -1,41 +1,33 @@
 package com.swcm.geoQuiz;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import com.swcm.geoQuiz.model.Ciudad;
+import com.swcm.geoQuiz.model.DbOpenHelper;
 
 import android.os.Bundle;
 import android.util.Log;
 
 public class PantallaJuegoOrientacion extends PantallaJuego {
-	
+
+	private DbOpenHelper db = new DbOpenHelper(this);
+	private static final int NUM_PREGUNTAS = 7;
+	private static final int NUM_RESPUESTAS = 5;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 	}
-	
+
 	@Override
 	public void crearJuego() {
 
-		preguntas.add("Capital de España");
-		preguntas.add("Capital de Portugal");
-		preguntas.add("Capital de Alemania");
-		final List<String> resp0 = new ArrayList<String>();
-		final List<String> resp1 = new ArrayList<String>();
-		final List<String> resp2 = new ArrayList<String>();
-		resp0.add("Madrid");
-		resp0.add("Barcelona");
-		resp0.add("Bilbao");
-		resp1.add("Lisboa");
-		resp1.add("Oporto");
-		resp2.add("Múnich");
-		resp2.add("Bonn");
-		resp2.add("Berlín");
-		respuestas.add(resp0);
-		respuestas.add(resp1);
-		respuestas.add(resp2);
-		soluciones.add(0);
-		soluciones.add(0);
-		soluciones.add(2);
+		db.getReadableDatabase();
+
+		// Obtengo toda la lista de ciudades
+		List<Ciudad> ciudades = db.getAllCities();
+
+		// Seguir...........
 	}
 
 	@Override
@@ -56,16 +48,18 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 
 	@Override
 	public void guardarPuntuacion() {
+		// De momento no implementar
+	}
 
-	}
-	
 	@Override
-	public void onResume() {
-		super.onResume();
-	}
-	
-	@Override
-	public void onPause() {
+	protected void onPause() {
 		super.onPause();
+		db.close();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		db.getReadableDatabase();
 	}
 }
