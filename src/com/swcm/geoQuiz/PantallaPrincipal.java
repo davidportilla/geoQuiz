@@ -26,6 +26,7 @@ public class PantallaPrincipal extends Activity {
 
 	/**
 	 * Lanza el juego seleccionado al pulsar OK en el AlertDialog que devuelve
+	 * 
 	 * @param titulo
 	 * @param modoDeJuego
 	 * @return AlertDialog
@@ -60,11 +61,23 @@ public class PantallaPrincipal extends Activity {
 	private void about() {
 		Context context = getApplicationContext();
 		CharSequence text = "Juego de geografía con preguntas sobre orientación y capitales."
-				+ '\n' + '\n'
+				+ '\n'
+				+ '\n'
+				+ "Para ver las puntuaciones pulse el botón con la estrella"
+				+ '\n'
+				+ '\n'
+				+ "Para modificar el nombre de usuario y borrar las puntuaciones pulse el botón de ajustes (al lado del anterior)."
+				+ '\n'
+				+ '\n'
+				+ "En consultar mapa introduzca dos direcciones y pulse submit. Solo funcionará si ha introducido dos ciudades."
+				+ '\n'
+				+ '\n'
 				+ "Álvaro Pérez Ramón"
 				+ '\n'
 				+ "David Portilla Abellán"
-				+ '\n' + '\n' + "© Todos los derechos reservados";
+				+ '\n'
+				+ '\n'
+				+ "© Todos los derechos reservados";
 		int duration = Toast.LENGTH_LONG;
 
 		Toast toast = Toast.makeText(context, text, duration);
@@ -74,6 +87,7 @@ public class PantallaPrincipal extends Activity {
 
 	/**
 	 * onClick para todas los botones de la actividad
+	 * 
 	 * @param view
 	 */
 	public void onClick(View view) {
@@ -102,11 +116,10 @@ public class PantallaPrincipal extends Activity {
 	 * Pasa a PantallaAjustes
 	 */
 	private void settings() {
-		Intent i = new Intent(PantallaPrincipal.this,
-				PantallaAjustes.class);
+		Intent i = new Intent(PantallaPrincipal.this, PantallaAjustes.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 		startActivity(i);
-		
+
 	}
 
 	/**
