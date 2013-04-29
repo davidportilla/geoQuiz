@@ -10,8 +10,16 @@ import com.swcm.geoQuiz.model.Ciudad;
 import com.swcm.geoQuiz.model.DbOpenHelper;
 import com.swcm.geoQuiz.model.Puntuacion;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
+/**
+ * 
+ * @author David Portilla
+ * @author Álvaro Pérez
+ * @version 29-4-2013
+ */
 public class PantallaJuegoOrientacion extends PantallaJuego {
 
 	private DbOpenHelper db = new DbOpenHelper(this);
@@ -27,10 +35,10 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 		// Obtengo toda la lista de ciudades
 		List<Ciudad> ciudades = db.getAllCities();
 
-		for(Ciudad c: ciudades) {
-			Log.d("LATLNG", ""+c.getLatitud() + ", "+c.getLongitud());
+		for (Ciudad c : ciudades) {
+			Log.d("LATLNG", "" + c.getLatitud() + ", " + c.getLongitud());
 		}
-		
+
 		// Reordeno aleatoriamente
 		Collections.shuffle(ciudades);
 
@@ -50,17 +58,10 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 					opciones.add(ciudades.get(aleatorio));
 					k++;
 				}
-				// Log.w("PREGUNTASORIENTACION",
-				// ciudades.get(aleatorio).getNombre() +
-				// ciudades.get(aleatorio).getLatitud()
-				// + ciudades.get(aleatorio).getLongitud());
-
 			}
 
 			// Reordeno las respuestas
 			Collections.shuffle(opciones);
-
-			// HASTA AQUÍ FUNCIONA PERFECTO
 
 			// Las meto en respuestas para jugar con ellas
 			List<String> respPrevias = new ArrayList<String>();
@@ -72,9 +73,9 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 			respuestas.add(respPrevias);
 			// Compruebo en qué índice está la solución correcta y la guardo
 			int solucion = 0;
-			//opciones.get(solucion).setCoordenadas(this);
+			// opciones.get(solucion).setCoordenadas(this);
 			for (int j = 1; j < opciones.size(); j++) {
-				//opciones.get(j).setCoordenadas(this);
+				// opciones.get(j).setCoordenadas(this);
 
 				if (!(opciones.get(solucion).getLatitud() > opciones.get(j)
 						.getLatitud()))
@@ -117,10 +118,16 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 
 		String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		db.getWritableDatabase();
-		Log.d("Insert: ", "Inserting ..");
-		Puntuacion p = new Puntuacion("David", calcularPuntuacion(), MODO,
-				today);
+
+		SharedPreferences prefs = this.getSharedPreferences("com.swcm.geoQuiz",
+				Context.MODE_PRIVATE);
+		String key = "com.example.app.username";
+
+		Puntuacion p = new Puntuacion(prefs.getString(key, "Anónimo"),
+				calcularPuntuacion(), MODO, today);
+
 		db.addPuntuacion(p);
+		Log.d("Insert: ", "Inserting ..");
 	}
 
 	@Override

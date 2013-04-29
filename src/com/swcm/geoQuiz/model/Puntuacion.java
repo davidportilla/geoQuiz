@@ -1,8 +1,11 @@
 package com.swcm.geoQuiz.model;
 
-import android.annotation.SuppressLint;
-import java.util.Locale;
-
+/**
+ * 
+ * @author David Portilla
+ * @author Álvaro Pérez
+ * @version 29-4-2013
+ */
 public class Puntuacion {
 
 	private String nombre;
@@ -10,6 +13,9 @@ public class Puntuacion {
 	private String fecha;
 	private String modo;
 	
+	/**
+	 * Constructor que inicializa todo a cero o String vacías
+	 */
 	public Puntuacion() {
 		this.nombre = "";
 		this.puntuacion = 0;
@@ -17,6 +23,13 @@ public class Puntuacion {
 		this.modo = "";
 	}
 	
+	/**
+	 * Constructor
+	 * @param nombre
+	 * @param puntuacion
+	 * @param modo
+	 * @param fecha
+	 */
 	public Puntuacion(String nombre, int puntuacion, String modo, String fecha) {
 		this.nombre = nombre;
 		this.modo = modo;

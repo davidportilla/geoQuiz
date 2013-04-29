@@ -25,6 +25,7 @@ import android.widget.TextView;
  * la barra de progreso.
  * 
  * @author David Portilla Abellán
+ * @author Álvaro Pérez Ramón
  * @version 22-4-2013
  */
 public class PantallaJuego extends Activity {
@@ -51,7 +52,7 @@ public class PantallaJuego extends Activity {
 	protected List<Integer> timeForAnswer = new ArrayList<Integer>();
 
 	/**
-	 * 
+	 * onCreate
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -257,6 +258,11 @@ public class PantallaJuego extends Activity {
 		});
 	}
 
+	/**
+	 * 
+	 * @param titulo
+	 * @return
+	 */
 	private AlertDialog confirmDialog(String titulo) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(titulo);
@@ -264,39 +270,52 @@ public class PantallaJuego extends Activity {
 		builder.setPositiveButton(text, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				finish();
-				/*Intent i = new Intent(PantallaJuego.this,
-						PantallaPrincipal.class);
-				i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-				startActivity(i);*/
 			}
 		});
 		return builder.create();
 	}
 
-	// Este método es para probar. Su funcionalidad será parte del modelo
+	/**
+	 * Inicializa las preguntas, respuestas y soluciones
+	 */
 	protected void crearJuego() {
 
 	}
 
-	public int calcularPuntuacion() {
+	/**
+	 * Calcula la puntuación obtenida
+	 * @return
+	 */
+	protected int calcularPuntuacion() {
 		return 0;
 	}
 	
-	public void guardarPuntuacion() {
+	/**
+	 * Guarda la puntuación en la base de datos
+	 */
+	protected void guardarPuntuacion() {
 		
 	}
 	
+	/**
+	 * No deja volver a la pantalla principal en medio de una partida
+	 */
 	@Override
 	public void onBackPressed() {
-		// No se puede volver a la pantalla principal en medio de una partida
 		return;
 	}
 
+	/**
+	 * onResume
+	 */
 	@Override
 	protected void onResume() {
 		super.onResume();
 	}
 
+	/**
+	 * onPause
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();

@@ -22,6 +22,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+/**
+ * 
+ * @author David Portilla
+ * @author Álvaro Pérez
+ * @version 29-4-2013
+ *
+ */
 public class PantallaMapa extends FragmentActivity {
 
 	private GoogleMap mMap;
@@ -56,11 +63,10 @@ public class PantallaMapa extends FragmentActivity {
 		}
 	}
 
-	/*
-	 * protected void onActivityCreated() { setUpMapIfNeeded();
-	 * mMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN); }
+	/**
+	 * Muestra en el mapa las ciudades escritas con sus coordenadas
+	 * @param view
 	 */
-
 	public void onClickButton(View view) {
 
 		Log.i("ONCLICK MAPA", "Submit");
@@ -167,6 +173,11 @@ public class PantallaMapa extends FragmentActivity {
 		}
 	}
 
+	/**
+	 * @param titulo
+	 * @param mensaje
+	 * @return AlertDialog
+	 */
 	private AlertDialog confirmDialog(String titulo, String mensaje) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(titulo);

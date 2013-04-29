@@ -10,6 +10,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+/**
+ * Clase que extiende a SQLiteOpenHelper para gestionar la base de datos
+ * 
+ * @author David Portilla
+ * @author Álvaro Pérez
+ * @version 29-4-2013
+ *
+ */
 public class DbOpenHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "ciudades.db";
@@ -30,12 +38,18 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	private static final String KEY_FECHA = "fecha";
 	private static final String KEY_MODO = "modo";
 
+	/**
+	 * query para crear la tabla de ciudades
+	 */
 	private static final String DB_TABLE_CREATE_CITIES = "CREATE TABLE "
 			+ TABLE_CITIES + " (" + KEY_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_CIUDAD + " TEXT, "
 			+ KEY_PAIS + " TEXT, " + KEY_ISCAPITAL + " INTEGER, " + KEY_LATITUD
 			+ " DOUBLE, " + KEY_LONGITUD + " DOUBLE " + ");";
 
+	/**
+	 * query para crear la tabla de puntuaciones
+	 */
 	private static final String DB_TABLE_CREATE_SCORES = "CREATE TABLE "
 			+ TABLE_SCORES + " (" + KEY_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_NOMBRE + " TEXT, "
@@ -60,6 +74,10 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 		db.execSQL(DB_TABLE_CREATE_SCORES);
 	}
 
+	/**
+	 * Inicializa la tabla de ciudades añadiendo unas cuantas
+	 * @param context
+	 */
 	public void inicializa(Context context) {
 		List<Ciudad> ciudades = new ArrayList<Ciudad>();
 
@@ -202,7 +220,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
 	/**
 	 * 
-	 * @return numero de filas de la base de datos
+	 * @return número de filas de la tabla de ciudades
 	 */
 	public int getCitiesCount() {
 		String countQuery = "SELECT  * FROM " + TABLE_CITIES;
@@ -256,7 +274,19 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 		db.delete(TABLE_CITIES, KEY_ID + " = ?", new String[] { "" + id });
 		db.close();
 	}
+	
+	/**
+	 * Elimina todas las filas de la tabla de puntuaciones
+	 */
+	public void deleteAllScores() {
+		SQLiteDatabase db = this.getWritableDatabase();
+		db.delete(TABLE_SCORES, null, null);
+	}
 
+	/**
+	 * Añade una nueva puntuación a la tabla de puntuaciones
+	 * @param p Puntuacion
+	 */
 	public void addPuntuacion(Puntuacion p) {
 
 		// Validador para evitar nulos

@@ -10,6 +10,12 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+/**
+ * 
+ * @author David Portilla
+ * @author Álvaro Pérez
+ * @version 29-4-2013
+ */
 public class PantallaPrincipal extends Activity {
 
 	@Override
@@ -18,6 +24,12 @@ public class PantallaPrincipal extends Activity {
 		setContentView(R.layout.pantalla_principal);
 	}
 
+	/**
+	 * Lanza el juego seleccionado al pulsar OK en el AlertDialog que devuelve
+	 * @param titulo
+	 * @param modoDeJuego
+	 * @return AlertDialog
+	 */
 	private AlertDialog confirmDialog(String titulo, final String modoDeJuego) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(titulo);
@@ -42,21 +54,28 @@ public class PantallaPrincipal extends Activity {
 		return builder.create();
 	}
 
+	/**
+	 * Información sobre la aplicación y los autores
+	 */
 	private void about() {
 		Context context = getApplicationContext();
 		CharSequence text = "Juego de geografía con preguntas sobre orientación y capitales."
-				+ '\n'
+				+ '\n' + '\n'
 				+ "Álvaro Pérez Ramón"
 				+ '\n'
 				+ "David Portilla Abellán"
 				+ '\n' + '\n' + "© Todos los derechos reservados";
-		int duration = Toast.LENGTH_SHORT;
+		int duration = Toast.LENGTH_LONG;
 
 		Toast toast = Toast.makeText(context, text, duration);
 		toast.setGravity(Gravity.TOP | Gravity.CENTER, 0, 0);
 		toast.show();
 	}
 
+	/**
+	 * onClick para todas los botones de la actividad
+	 * @param view
+	 */
 	public void onClick(View view) {
 		switch (view.getId()) {
 		case R.id.infoButton:
@@ -79,14 +98,20 @@ public class PantallaPrincipal extends Activity {
 		}
 	}
 
+	/**
+	 * Pasa a PantallaAjustes
+	 */
 	private void settings() {
-		/*Intent i = new Intent(PantallaPrincipal.this,
-				PantallaConfiguracion.class);
+		Intent i = new Intent(PantallaPrincipal.this,
+				PantallaAjustes.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		startActivity(i);*/
+		startActivity(i);
 		
 	}
 
+	/**
+	 * Pasa a PantallaPuntuaciones
+	 */
 	private void scores() {
 		Intent i = new Intent(PantallaPrincipal.this,
 				PantallaPuntuaciones.class);
@@ -94,6 +119,9 @@ public class PantallaPrincipal extends Activity {
 		startActivity(i);
 	}
 
+	/**
+	 * Pasa a PantallaMapa
+	 */
 	private void irAlMapa() {
 		Intent i = new Intent(PantallaPrincipal.this, PantallaMapa.class);
 		i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);

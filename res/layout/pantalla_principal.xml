@@ -25,17 +25,6 @@
         android:text="@string/mapaButton"
         android:color="#38B5E5" />
 
-    <Button
-        android:id="@+id/orientacionButton"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/infoButton"
-        android:layout_marginTop="99dp"
-        android:onClick="onClick"
-        android:text="@string/orientacionButton"
-        android:color="#38B5E5" />
-
     <ImageButton
         android:id="@+id/infoButton"
         android:layout_width="wrap_content"
@@ -65,5 +54,16 @@
         android:contentDescription="@string/settingsButtonDescription"
         android:onClick="onClick"
         android:src="@drawable/action_settings" />
+
+    <Button
+        android:id="@+id/orientacionButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/infoButton"
+        android:layout_marginTop="161dp"
+        android:onClick="onClick"
+        android:text="@string/orientacionButton"
+        android:color="#38B5E5" />
    
 </RelativeLayout>

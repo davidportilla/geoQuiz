@@ -1,4 +1,5 @@
 eclipse.preferences.version=1
+encoding//src/com/swcm/geoQuiz/PantallaAjustes.java=UTF-8
 encoding//src/com/swcm/geoQuiz/PantallaInicial.java=UTF-8
 encoding//src/com/swcm/geoQuiz/PantallaJuego.java=UTF-8
 encoding//src/com/swcm/geoQuiz/PantallaJuegoCapitales.java=UTF-8
@@ -6,4 +7,6 @@ encoding//src/com/swcm/geoQuiz/PantallaJuegoOrientacion.java=UTF-8
 encoding//src/com/swcm/geoQuiz/PantallaMapa.java=UTF-8
 encoding//src/com/swcm/geoQuiz/PantallaPrincipal.java=UTF-8
 encoding//src/com/swcm/geoQuiz/PantallaPuntuaciones.java=UTF-8
+encoding//src/com/swcm/geoQuiz/model/Ciudad.java=UTF-8
 encoding//src/com/swcm/geoQuiz/model/DbOpenHelper.java=UTF-8
+encoding//src/com/swcm/geoQuiz/model/Puntuacion.java=UTF-8

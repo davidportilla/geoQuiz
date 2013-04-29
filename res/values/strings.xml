@@ -10,5 +10,7 @@
     <string name="capitalesButton">Capitales</string>
     <string name="mapaButton">Consultar mapa</string>
     <string name="no_scores">No hay puntuaciones aún</string>
+    <string name="usuario">Nombre de usuario: </string>
+    <string name="borrar">Borrar puntuaciones</string>
 
 </resources>
