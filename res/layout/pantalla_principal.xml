@@ -4,7 +4,7 @@
     android:layout_height="fill_parent"
     android:background="@drawable/pantalla1"
     tools:context=".PantallaPrincipal" >
-
+    
     <Button
         android:id="@+id/capitalesButton"
         android:layout_width="fill_parent"
@@ -50,10 +50,20 @@
         android:id="@+id/scoresButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/orientacionButton"
+        android:layout_alignParentTop="true"
         android:layout_toLeftOf="@+id/infoButton"
         android:contentDescription="@string/scoresButtonDescription"
         android:onClick="onClick"
-        android:src="@drawable/rating" />
+        android:src="@drawable/ic_action_star" />
+
+    <ImageButton
+        android:id="@+id/settingsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/orientacionButton"
+        android:layout_toLeftOf="@+id/scoresButton"
+        android:contentDescription="@string/settingsButtonDescription"
+        android:onClick="onClick"
+        android:src="@drawable/action_settings" />
    
 </RelativeLayout>

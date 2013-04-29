@@ -44,9 +44,12 @@ public class PantallaPrincipal extends Activity {
 
 	private void about() {
 		Context context = getApplicationContext();
-		CharSequence text = "Álvaro Pérez Ramón" + '\n'
-				+ "David Portilla Abellán" + '\n' + '\n'
-				+ "© Todos los derechos reservados";
+		CharSequence text = "Juego de geografía con preguntas sobre orientación y capitales."
+				+ '\n'
+				+ "Álvaro Pérez Ramón"
+				+ '\n'
+				+ "David Portilla Abellán"
+				+ '\n' + '\n' + "© Todos los derechos reservados";
 		int duration = Toast.LENGTH_SHORT;
 
 		Toast toast = Toast.makeText(context, text, duration);
@@ -62,6 +65,9 @@ public class PantallaPrincipal extends Activity {
 		case R.id.scoresButton:
 			scores();
 			break;
+		case R.id.settingsButton:
+			settings();
+			break;
 		case R.id.orientacionButton:
 			confirmDialog("Pulse OK para empezar", "orientacion").show();
 			break;
@@ -71,6 +77,14 @@ public class PantallaPrincipal extends Activity {
 		case R.id.mapaButton:
 			irAlMapa();
 		}
+	}
+
+	private void settings() {
+		/*Intent i = new Intent(PantallaPrincipal.this,
+				PantallaConfiguracion.class);
+		i.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		startActivity(i);*/
+		
 	}
 
 	private void scores() {

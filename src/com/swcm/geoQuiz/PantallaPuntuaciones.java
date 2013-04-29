@@ -18,13 +18,16 @@ import com.swcm.geoQuiz.model.Puntuacion;
 public class PantallaPuntuaciones extends Activity {
 
 	private DbOpenHelper db;
-	private ListView lv;
+	private ListView lv1;
+	private ListView lv2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.pantalla_puntuaciones);
-		lv = (ListView) findViewById(R.id.list);
+		// lv1 para capitales, lv2 para orientacion
+		lv1 = (ListView) findViewById(R.id.list1);
+		lv2 = (ListView) findViewById(R.id.list2);
 
 		db = new DbOpenHelper(this);
 		db.getReadableDatabase();
@@ -35,29 +38,65 @@ public class PantallaPuntuaciones extends Activity {
 
 	private void fillData() {
 		// Get all of the notes from the database and create the item list
-		List<Puntuacion> l = db.getAllScores();
+		List<Puntuacion> todo = db.getAllScores();
 
-		if (l == null) {
-			Log.i("FILLDATA", "No hay puntuaciones");
+		if (todo.isEmpty() || todo == null) {
+			Log.i("PUNTUACIONES", "no cargo ninguna puntuacion");
+			return;
 		}
 
-		// Ordena la lista de mayor a menor puntuacion
-		Collections.sort(l, new Comparator<Puntuacion>() {
-	        @Override public int compare(Puntuacion p1, Puntuacion p2) {
-	            return p2.getPuntuacion() - p1.getPuntuacion();
-	        }
-	    });
-		
-		// Pasa la lista de puntuaciones a una lista de String
-		List<String> values = new ArrayList<String>();
-		for (Puntuacion p : l) {
-			values.add(p.toString());
+		List<Puntuacion> capitales = new ArrayList<Puntuacion>();
+		List<Puntuacion> orientacion = new ArrayList<Puntuacion>();
+
+		for (Puntuacion p : todo) {
+			if (p.getModo().equals("capitales")) {
+				capitales.add(p);
+			} else if (p.getModo().equals("orientacion")) {
+				orientacion.add(p);
+			} else {
+				Log.w("PUNTUACIONES", "puntuacion con modo incorrecto");
+			}
 		}
 
-		// Now create an array adapter and set it to display
-		ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,
-				android.R.layout.simple_list_item_1, values);
-		lv.setAdapter((ListAdapter) arrayAdapter);
+		if (!capitales.isEmpty()) {
+			// Ordeno la lista
+			Collections.sort(capitales, new Comparator<Puntuacion>() {
+				@Override
+				public int compare(Puntuacion p1, Puntuacion p2) {
+					return p2.getPuntuacion() - p1.getPuntuacion();
+				}
+			});
+			// Paso la lista a una lista de String
+			List<String> valuesCapitales = new ArrayList<String>();
+			for (Puntuacion p : capitales) {
+				valuesCapitales.add(p.toString());
+			}
+			Log.i("PUNT. CAP. 0", valuesCapitales.get(0));
+			// Now create an array adapter and set it to display
+			ArrayAdapter<String> arrayAdapter1 = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, valuesCapitales);
+			lv1.setAdapter((ListAdapter) arrayAdapter1);
+		}
+
+		if (!orientacion.isEmpty()) {
+			// Ordeno la lista
+			Collections.sort(orientacion, new Comparator<Puntuacion>() {
+				@Override
+				public int compare(Puntuacion p1, Puntuacion p2) {
+					return p2.getPuntuacion() - p1.getPuntuacion();
+				}
+			});
+			// Paso la lista a una lista de String
+			List<String> valuesOrientacion = new ArrayList<String>();
+			for (Puntuacion p : orientacion) {
+				valuesOrientacion.add(p.toString());
+			}
+			Log.i("PUNT. ORI. 0", valuesOrientacion.get(0));
+			// Now create an array adapter and set it to display
+			ArrayAdapter<String> arrayAdapter2 = new ArrayAdapter<String>(this,
+					android.R.layout.simple_list_item_1, valuesOrientacion);
+			lv2.setAdapter((ListAdapter) arrayAdapter2);
+		}
 
 	}
 

@@ -6,7 +6,6 @@ import java.util.List;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
-import android.util.Log;
 
 public class Ciudad {
 
@@ -90,6 +89,14 @@ public class Ciudad {
 
 	public void setCapital(int isCapital) {
 		this.isCapital = isCapital;
+	}
+	
+	public void setLatitud(double latitud) {
+		this.latitud = latitud;
+	}
+	
+	public void setLongitud(double longitud) {
+		this.longitud = longitud;
 	}
 	
 }

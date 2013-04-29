@@ -1,5 +1,8 @@
 package com.swcm.geoQuiz.model;
 
+import android.annotation.SuppressLint;
+import java.util.Locale;
+
 public class Puntuacion {
 
 	private String nombre;
@@ -11,6 +14,7 @@ public class Puntuacion {
 		this.nombre = "";
 		this.puntuacion = 0;
 		this.fecha = "";
+		this.modo = "";
 	}
 	
 	public Puntuacion(String nombre, int puntuacion, String modo, String fecha) {
@@ -40,8 +44,8 @@ public class Puntuacion {
 		return this.puntuacion;
 	}
 
-	public void setModo(String Modo){
-		this.modo = Modo;
+	public void setModo(String modo){
+		this.modo = modo;
 	}
 	public String getFecha() {
 		return this.fecha;
@@ -53,7 +57,7 @@ public class Puntuacion {
 	
 	@Override
 	public String toString() {
-		return nombre + "   " + puntuacion + "   " + fecha;
+		return modo.toUpperCase() + ":  " + puntuacion + "    " + nombre + ",  " + fecha;
 	}
 	
 }

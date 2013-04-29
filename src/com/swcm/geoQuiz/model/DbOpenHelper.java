@@ -14,31 +14,34 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
 	private static final String DATABASE_NAME = "ciudades.db";
 	private static final int DATABASE_VERSION = 2;
-	
+
 	private static final String TABLE_CITIES = "ciudades";
 	private static final String TABLE_SCORES = "puntuaciones";
-	
+
 	private static final String KEY_ID = "_id";
 	private static final String KEY_CIUDAD = "ciudad";
 	private static final String KEY_PAIS = "pais";
 	private static final String KEY_ISCAPITAL = "is_capital";
 	private static final String KEY_LATITUD = "latitud";
 	private static final String KEY_LONGITUD = "longitud";
-	
+
 	private static final String KEY_NOMBRE = "nombre";
 	private static final String KEY_PUNTUACION = "puntuacion";
 	private static final String KEY_FECHA = "fecha";
 	private static final String KEY_MODO = "modo";
-	
+
 	private static final String DB_TABLE_CREATE_CITIES = "CREATE TABLE "
-			+ TABLE_CITIES + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-			+ KEY_CIUDAD + " TEXT, " + KEY_PAIS + " TEXT, " + KEY_ISCAPITAL + " INTEGER, "
-			+ KEY_LATITUD + " DOUBLE, " + KEY_LONGITUD + " DOUBLE " + ");";
+			+ TABLE_CITIES + " (" + KEY_ID
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_CIUDAD + " TEXT, "
+			+ KEY_PAIS + " TEXT, " + KEY_ISCAPITAL + " INTEGER, " + KEY_LATITUD
+			+ " DOUBLE, " + KEY_LONGITUD + " DOUBLE " + ");";
 
 	private static final String DB_TABLE_CREATE_SCORES = "CREATE TABLE "
-			+ TABLE_SCORES + " (" + KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " 
-			+ KEY_NOMBRE + " TEXT, " + KEY_PUNTUACION + " INTEGER, " + KEY_MODO + " STRING, " + KEY_FECHA + " TEXT);";
-	
+			+ TABLE_SCORES + " (" + KEY_ID
+			+ " INTEGER PRIMARY KEY AUTOINCREMENT, " + KEY_NOMBRE + " TEXT, "
+			+ KEY_PUNTUACION + " INTEGER, " + KEY_MODO + " TEXT, "
+			+ KEY_FECHA + " TEXT);";
+
 	/**
 	 * Constructor para crear una base de datos
 	 * 
@@ -59,7 +62,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
 	public void inicializa(Context context) {
 		List<Ciudad> ciudades = new ArrayList<Ciudad>();
-		
+
 		ciudades.add(new Ciudad("Tirana", "Albania", 1));
 		ciudades.add(new Ciudad("Berlín", "Alemania", 1));
 		ciudades.add(new Ciudad("Erevan", "Armenia", 1));
@@ -83,7 +86,7 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 		ciudades.add(new Ciudad("Dublín", "Irlanda", 1));
 		ciudades.add(new Ciudad("Reikiavik", "Islandia", 1));
 		ciudades.add(new Ciudad("Roma", "Italia", 1));
-		
+
 		ciudades.add(new Ciudad("Barcelona", "España", 0));
 		ciudades.add(new Ciudad("Bilbao", "España", 0));
 		ciudades.add(new Ciudad("Valencia", "España", 0));
@@ -99,12 +102,13 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 		ciudades.add(new Ciudad("Sao Paulo", "Brasil", 0));
 		ciudades.add(new Ciudad("Río de Janeiro", "Brasil", 0));
 		ciudades.add(new Ciudad("Brasilia", "Brasil", 1));
-		
-		for(Ciudad c: ciudades) {
+
+		for (Ciudad c : ciudades) {
 			c.setCoordenadas(context);
+			Log.d("LATITUD", ""+c.getLatitud());
 			addCity(c);
 		}
-		
+
 	}
 
 	/**
@@ -122,20 +126,28 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 
 	/**
 	 * Añade una nueva ciudad a la base de datos
+	 * 
 	 * @param c
 	 */
 	public void addCity(Ciudad c) {
+
+		// Validador para evitar nulos
+		if (c == null) {
+			Log.w("DATABASE", "Intento de meter null");
+			return;
+		}
+
 		SQLiteDatabase db = this.getWritableDatabase();
-	    ContentValues values = new ContentValues();
-	    values.put(KEY_CIUDAD, c.getNombre());
-	    values.put(KEY_PAIS, c.getPais());
-	    values.put(KEY_ISCAPITAL, c.isCapital());
-	    values.put(KEY_LATITUD, c.getLatitud());
-	    values.put(KEY_LONGITUD, c.getLongitud());
-	 
-	    // Inserting Row
-	    db.insert(TABLE_CITIES, null, values);
-	    db.close(); // Closing database connection
+		ContentValues values = new ContentValues();
+		values.put(KEY_CIUDAD, c.getNombre());
+		values.put(KEY_PAIS, c.getPais());
+		values.put(KEY_ISCAPITAL, c.isCapital());
+		values.put(KEY_LATITUD, c.getLatitud());
+		values.put(KEY_LONGITUD, c.getLongitud());
+
+		// Inserting Row
+		db.insert(TABLE_CITIES, null, values);
+		db.close(); // Closing database connection
 	}
 
 	/**
@@ -145,17 +157,18 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	 */
 	public Ciudad getCity(int id) {
 		SQLiteDatabase db = this.getReadableDatabase();
-		 
-	    Cursor cursor = db.query(TABLE_CITIES, new String[] { KEY_ID,
-	            KEY_CIUDAD, KEY_PAIS, KEY_ISCAPITAL, KEY_LATITUD, KEY_LONGITUD }, 
-	            KEY_ID + "=?", new String[] { String.valueOf(id) }, null, null, null, null);
-	    if (cursor != null)
-	        cursor.moveToFirst();
-	 
-	    Ciudad c = new Ciudad(cursor.getString(0), cursor.getString(1),
-	    		cursor.getInt(2), cursor.getDouble(3), cursor.getDouble(4));
-	    // return city
-	    return c;
+
+		Cursor cursor = db.query(TABLE_CITIES,
+				new String[] { KEY_ID, KEY_CIUDAD, KEY_PAIS, KEY_ISCAPITAL,
+						KEY_LATITUD, KEY_LONGITUD }, KEY_ID + "=?",
+				new String[] { String.valueOf(id) }, null, null, null, null);
+		if (cursor != null)
+			cursor.moveToFirst();
+
+		Ciudad c = new Ciudad(cursor.getString(1), cursor.getString(2),
+				cursor.getInt(3), cursor.getDouble(4), cursor.getDouble(5));
+		// return city
+		return c;
 	}
 
 	/**
@@ -164,25 +177,27 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	 */
 	public List<Ciudad> getAllCities() {
 		List<Ciudad> citiesList = new ArrayList<Ciudad>();
-	    // Select All Query
-	    String selectQuery = "SELECT  * FROM " + TABLE_CITIES;
-	 
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    Cursor cursor = db.rawQuery(selectQuery, null);
-	 
-	    // looping through all rows and adding to list
-	    if (cursor.moveToFirst()) {
-	        do {
-	            Ciudad c = new Ciudad();
-	            c.setNombre(cursor.getString(1));
-	            c.setPais(cursor.getString(2));
-	            c.setCapital(Integer.parseInt(cursor.getString(3)));
-	            // Adding city to list
-	            citiesList.add(c);
-	        } while (cursor.moveToNext());
-	    }
-	 
-	    return citiesList;
+		// Select All Query
+		String selectQuery = "SELECT  * FROM " + TABLE_CITIES;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				Ciudad c = new Ciudad();
+				c.setNombre(cursor.getString(1));
+				c.setPais(cursor.getString(2));
+				c.setCapital(cursor.getInt(3));
+				c.setLatitud(cursor.getDouble(4));
+				c.setLongitud(cursor.getDouble(5));
+				// Adding city to list
+				citiesList.add(c);
+			} while (cursor.moveToNext());
+		}
+
+		return citiesList;
 	}
 
 	/**
@@ -191,92 +206,104 @@ public class DbOpenHelper extends SQLiteOpenHelper {
 	 */
 	public int getCitiesCount() {
 		String countQuery = "SELECT  * FROM " + TABLE_CITIES;
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor cursor = db.rawQuery(countQuery, null);
-        cursor.close();
- 
-        // return count
-        return cursor.getCount();
+		SQLiteDatabase db = this.getReadableDatabase();
+		Cursor cursor = db.rawQuery(countQuery, null);
+		cursor.close();
+
+		// return count
+		return cursor.getCount();
 	}
 
 	/**
 	 * Actualiza una ciudad
 	 * 
-	 * @param id de la ciudad a actualizar
-	 * @param c Ciudad a introducir en esa fila
+	 * @param id
+	 *            de la ciudad a actualizar
+	 * @param c
+	 *            Ciudad a introducir en esa fila
 	 * @return int con código de error
 	 */
 	public int updateCity(int id, Ciudad c) {
+
+		// Validador para evitar nulos
+		if (c == null) {
+			Log.w("DATABASE", "Intento de meter null");
+			return -1;
+		}
+
 		SQLiteDatabase db = this.getWritableDatabase();
-		 
-	    ContentValues values = new ContentValues();
-	    values.put(KEY_CIUDAD, c.getNombre());
-	    values.put(KEY_PAIS, c.getPais());
-	    values.put(KEY_ISCAPITAL, c.isCapital());
-	    values.put(KEY_LATITUD, c.getLatitud());
-	    values.put(KEY_LONGITUD, c.getLongitud());
-	 
-	    // updating row
-	    return db.update(TABLE_CITIES, values, KEY_CIUDAD + " = ?",
-	            new String[] { String.valueOf(id) });
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_CIUDAD, c.getNombre());
+		values.put(KEY_PAIS, c.getPais());
+		values.put(KEY_ISCAPITAL, c.isCapital());
+		values.put(KEY_LATITUD, c.getLatitud());
+		values.put(KEY_LONGITUD, c.getLongitud());
+
+		// updating row
+		return db.update(TABLE_CITIES, values, KEY_CIUDAD + " = ?",
+				new String[] { String.valueOf(id) });
 	}
 
 	/**
 	 * Elimina una ciudad
 	 * 
-	 * @param id de la ciudad a eliminar
+	 * @param id
+	 *            de la ciudad a eliminar
 	 */
 	public void deleteCity(int id) {
 		SQLiteDatabase db = this.getWritableDatabase();
-	    db.delete(TABLE_CITIES, KEY_ID + " = ?",
-	            new String[] { ""+id });
-	    db.close();
+		db.delete(TABLE_CITIES, KEY_ID + " = ?", new String[] { "" + id });
+		db.close();
 	}
-	
+
 	public void addPuntuacion(Puntuacion p) {
-	    SQLiteDatabase db = this.getWritableDatabase();
-	 
-	    ContentValues values = new ContentValues();
-	    values.put(KEY_NOMBRE, p.getNombre());
-	    values.put(KEY_PUNTUACION, p.getPuntuacion());
-	    values.put(KEY_MODO, p.getModo());
-	    values.put(KEY_FECHA, p.getFecha());
-	    
-	    
-	    // Inserting Row
-	    db.insert(TABLE_SCORES, null, values);
-	    db.close(); // Closing database connection
+
+		// Validador para evitar nulos
+		if (p == null) {
+			Log.w("DATABASE", "Intento de meter null");
+			return;
+		}
+
+		SQLiteDatabase db = this.getWritableDatabase();
+
+		ContentValues values = new ContentValues();
+		values.put(KEY_NOMBRE, p.getNombre());
+		values.put(KEY_PUNTUACION, p.getPuntuacion());
+		values.put(KEY_MODO, p.getModo());
+		values.put(KEY_FECHA, p.getFecha());
+		
+		// Inserting Row
+		db.insert(TABLE_SCORES, null, values);
+		db.close(); // Closing database connection
 	}
-	
+
 	/**
 	 * 
 	 * @return lista con todas las puntuaciones guardadas
 	 */
 	public List<Puntuacion> getAllScores() {
 		List<Puntuacion> puntuaciones = new ArrayList<Puntuacion>();
-	    // Select All Query
-	    String selectQuery = "SELECT  * FROM " + TABLE_SCORES;
-	 
-	    SQLiteDatabase db = this.getWritableDatabase();
-	    Cursor cursor = db.rawQuery(selectQuery, null);
-	 
-	    // looping through all rows and adding to list
-	    if (cursor.moveToFirst()) {
-	        do {
-	            Puntuacion p = new Puntuacion();
-	            p.setNombre(cursor.getString(1));
-	            p.setPuntuacion(Integer.parseInt(cursor.getString(2)));
-	            p.setModo(cursor.getString(3));
-	            p.setFecha(cursor.getString(4));
-	            // Adding score to list
-	            puntuaciones.add(p);
-	        } while (cursor.moveToNext());
-	    }
-	 
-	    return puntuaciones;
+		// Select All Query
+		String selectQuery = "SELECT  * FROM " + TABLE_SCORES;
+
+		SQLiteDatabase db = this.getWritableDatabase();
+		Cursor cursor = db.rawQuery(selectQuery, null);
+
+		// looping through all rows and adding to list
+		if (cursor.moveToFirst()) {
+			do {
+				Puntuacion p = new Puntuacion();
+				p.setNombre(cursor.getString(1));
+				p.setPuntuacion(Integer.parseInt(cursor.getString(2)));
+				p.setModo(cursor.getString(3));
+				p.setFecha(cursor.getString(4));
+				// Adding score to list
+				puntuaciones.add(p);
+			} while (cursor.moveToNext());
+		}
+
+		return puntuaciones;
 	}
-	
-	
-	
 
 }

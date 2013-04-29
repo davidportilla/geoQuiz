@@ -10,7 +10,6 @@ import com.swcm.geoQuiz.model.Ciudad;
 import com.swcm.geoQuiz.model.DbOpenHelper;
 import com.swcm.geoQuiz.model.Puntuacion;
 
-import android.os.Bundle;
 import android.util.Log;
 
 public class PantallaJuegoOrientacion extends PantallaJuego {
@@ -18,12 +17,7 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 	private DbOpenHelper db = new DbOpenHelper(this);
 	private static final int NUM_PREGUNTAS = 7;
 	private static final int NUM_RESPUESTAS = 5;
-	private final String MODO = "Orientacion";
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-	}
+	private static final String MODO = "orientacion";
 
 	@Override
 	public void crearJuego() {
@@ -33,72 +27,72 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 		// Obtengo toda la lista de ciudades
 		List<Ciudad> ciudades = db.getAllCities();
 
+		for(Ciudad c: ciudades) {
+			Log.d("LATLNG", ""+c.getLatitud() + ", "+c.getLongitud());
+		}
+		
 		// Reordeno aleatoriamente
 		Collections.shuffle(ciudades);
-		
-		// Creo una lista para guardar las respuestas de cada pregunta y la solucion
-		String respuestaCorrecta = "";
-		
+
 		// Variable auxiliar
 		int aleatorio = 0;
-		
+
 		// Para cada pregunta
-		for(int i = 0; i < ciudades.size() ; i++) {
+		for (int i = 0; i < ciudades.size(); i++) {
 			List<Ciudad> opciones = new ArrayList<Ciudad>();
-			opciones.clear();	
-			 
-				// Hay que encontrar otras tres respuestas
-				int k = 0;
-				while(k < NUM_RESPUESTAS) {
-					aleatorio = (int) (Math.random()*ciudades.size());
-					if(!opciones.contains(ciudades.get(aleatorio))){
+			opciones.clear();
+
+			// Hay que encontrar otras tres respuestas
+			int k = 0;
+			while (k < NUM_RESPUESTAS) {
+				aleatorio = (int) (Math.random() * ciudades.size());
+				if (!opciones.contains(ciudades.get(aleatorio))) {
 					opciones.add(ciudades.get(aleatorio));
 					k++;
-					}
-					//Log.w("PREGUNTASORIENTACION", ciudades.get(aleatorio).getNombre() + ciudades.get(aleatorio).getLatitud() 
-					//		+ ciudades.get(aleatorio).getLongitud());
-					
-					}
-				
-								
-				// Reordeno las respuestas
-				Collections.shuffle(opciones);
-				
-				// HASTA AQUÍ FUNCIONA PERFECTO
-				
-				// Las meto en respuestas para jugar con ellas
-				List<String> respPrevias = new ArrayList<String>();
-								
-				for(Ciudad c: opciones){
-					respPrevias.add(c.getNombre());
-					Log.d("RESPX", c.getNombre() + c.getLatitud());
 				}
-				respuestas.add(respPrevias);
-				// Compruebo en qué índice está la solución correcta y la guardo
-				int solucion = 0;
-				opciones.get(solucion).setCoordenadas(this);
-				for (int j = 1; j < opciones.size(); j++) {
-					opciones.get(j).setCoordenadas(this);	
-					
-							if(!(opciones.get(solucion).getLatitud()>opciones.get(j).getLatitud()))
-								solucion = j;
-						
-					}
-				
-				Log.i("SOLUCION", solucion + "");
-				soluciones.add(solucion);
-				
+				// Log.w("PREGUNTASORIENTACION",
+				// ciudades.get(aleatorio).getNombre() +
+				// ciudades.get(aleatorio).getLatitud()
+				// + ciudades.get(aleatorio).getLongitud());
 
-				// Salimos del bucle si ya tenemos las preguntas que queremos
-				preguntas.add("¿Qué ciudad está mas al norte?");
-				if(preguntas.size() == NUM_PREGUNTAS) {
-					break;
-				}
 			}
-			//Log.i("SOLUCION 0", "" + soluciones.get(0));
-}
-				
-	
+
+			// Reordeno las respuestas
+			Collections.shuffle(opciones);
+
+			// HASTA AQUÍ FUNCIONA PERFECTO
+
+			// Las meto en respuestas para jugar con ellas
+			List<String> respPrevias = new ArrayList<String>();
+
+			for (Ciudad c : opciones) {
+				respPrevias.add(c.getNombre());
+				Log.d("RESPX", c.getNombre() + c.getLatitud());
+			}
+			respuestas.add(respPrevias);
+			// Compruebo en qué índice está la solución correcta y la guardo
+			int solucion = 0;
+			//opciones.get(solucion).setCoordenadas(this);
+			for (int j = 1; j < opciones.size(); j++) {
+				//opciones.get(j).setCoordenadas(this);
+
+				if (!(opciones.get(solucion).getLatitud() > opciones.get(j)
+						.getLatitud()))
+					solucion = j;
+
+			}
+
+			Log.i("SOLUCION", solucion + "");
+			soluciones.add(solucion);
+
+			// Salimos del bucle si ya tenemos las preguntas que queremos
+			preguntas.add("¿Qué ciudad está mas al norte?");
+			if (preguntas.size() == NUM_PREGUNTAS) {
+				break;
+			}
+		}
+		// Log.i("SOLUCION 0", "" + soluciones.get(0));
+	}
 
 	@Override
 	public int calcularPuntuacion() {
@@ -124,7 +118,8 @@ public class PantallaJuegoOrientacion extends PantallaJuego {
 		String today = new SimpleDateFormat("dd/MM/yyyy").format(new Date());
 		db.getWritableDatabase();
 		Log.d("Insert: ", "Inserting ..");
-		Puntuacion p = new Puntuacion("David", calcularPuntuacion(), MODO ,today);
+		Puntuacion p = new Puntuacion("David", calcularPuntuacion(), MODO,
+				today);
 		db.addPuntuacion(p);
 	}
 

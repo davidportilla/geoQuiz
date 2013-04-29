@@ -26,6 +26,11 @@ public class PantallaInicial extends Activity {
 	 */
 	private boolean m_bSplashActive = true;
 
+	/**
+	 * Base de datos de la aplicación
+	 */
+	private DbOpenHelper db = new DbOpenHelper(this);
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -34,6 +39,21 @@ public class PantallaInicial extends Activity {
 		Thread splashTimer = new Thread() {
 			public void run() {
 				try {
+					
+					// Inicializa la tabla de ciudades si está vacía
+					SQLiteDatabase sql = db.getReadableDatabase();
+					Cursor mCursor = sql.rawQuery("SELECT * FROM " + "ciudades", null);
+					boolean rowExists;
+					if (mCursor.moveToFirst()) {
+						rowExists = true;
+					} else {
+						// EMPTY
+						rowExists = false;
+					}
+					if (!rowExists) {
+						db.inicializa(getApplicationContext());
+					}
+					
 					// Wait loop
 					long ms = 0;
 					while (m_bSplashActive && ms < m_dwSplashTime) {
@@ -57,20 +77,6 @@ public class PantallaInicial extends Activity {
 		};
 		splashTimer.start();
 
-		// Inicializa la tabla de ciudades si está vacía
-		DbOpenHelper db = new DbOpenHelper(this);
-		SQLiteDatabase sql = db.getReadableDatabase();
-		Cursor mCursor = sql.rawQuery("SELECT * FROM " + "ciudades", null);
-		boolean rowExists;
-		if (mCursor.moveToFirst()) {
-			rowExists = true;
-		} else {
-			// EMPTY
-			rowExists = false;
-		}
-		if (!rowExists) {
-			db.inicializa(getApplicationContext());
-		}
 	}
 
 	/**
@@ -79,6 +85,7 @@ public class PantallaInicial extends Activity {
 	protected void onPause() {
 		super.onPause();
 		m_bPaused = true;
+		db.close();
 	}
 
 	/**
@@ -87,6 +94,7 @@ public class PantallaInicial extends Activity {
 	protected void onResume() {
 		super.onResume();
 		m_bPaused = false;
+		db.getReadableDatabase();
 	}
-
+	
 }
